@@ -1,0 +1,229 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String
+  passcode  String?
+  user_type UserType   @default(USER)
+  bookings  Booking[]
+  rooms     Room[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Reviews   Reviews[]
+  Account   Account[]
+  Session   Session[]
+  Facility  Facility[]
+  Image     Image[]
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  roomId      String
+  room        Room          @relation(fields: [roomId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  totalCost   Int
+  type        BookingType   @default(ONLINE)
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Transaction Transaction[]
+  // Guest       Guest[]
+}
+
+// model Guest {
+//   id        String    @id @default(cuid())
+//   type      GuestType
+//   count     Int
+//   bookingId String
+//   booking   Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+// }
+
+model Room {
+  id                     String  @id @default(cuid())
+  name                   String
+  description            String
+  // capacity    Int
+  price                  Int
+  discount_percent       Int
+  isAvailable            Boolean @default(true)
+  available_announcement String?
+
+  // features               Feature[] // Relation to features
+  features  String[] // Relation to features
+  images    Image[] // Relation to images
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Reviews   Reviews[]
+  // GuestLimit GuestLimit?
+  User      User      @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+// model GuestLimit {
+//   id       String @id @default(cuid())
+//   roomId   String @unique
+//   room     Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+//   adults   Int    @default(2)
+//   children Int    @default(0)
+//   infants  Int    @default(0)
+//   pets     Int    @default(0)
+// }
+
+model Reviews {
+  id        String   @id @default(cuid())
+  comment   String
+  rating    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  roomId    String
+  room      Room     @relation(fields: [roomId], references: [id] )
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// New model for room images
+model Image {
+  id     String  @id @default(cuid())
+  url    String // URL from Firebase Storage
+  key    String
+  roomId String?
+  room   Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId String
+  user   User    @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Facility  Facility?
+}
+
+// New model for room features
+
+// model Feature {
+//   id        String   @id @default(cuid())
+//   name      String // e.g., "WiFi", "TV", "Air Conditioning"
+//   icon      String? // Icon name or URL
+//   rooms     Room[] // Many-to-many relation with rooms
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([name]) // Ensure feature names are unique
+// }
+
+model Facility {
+  id        String   @id @default(cuid())
+  name      String // e.g., "WiFi", "TV", "Air Conditioning"
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId   String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name]) // Ensure feature names are unique
+}
+
+model Transaction {
+  id            String            @id @default(cuid())
+  amount        Float
+  currency      String
+  status        TransactionStatus @default(PENDING)
+  type          TransactionType   @default(PAYMENT)
+  paymentMethod String
+  errorMessage  String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  booking       Booking?          @relation(fields: [bookingId], references: [id])
+  bookingId     String
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  expires      DateTime
+  userId       String   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         Int      @id @default(autoincrement())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum GuestType {
+  ADULT
+  CHILD
+  INFANT
+  PET
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESSFUL
+  FAILED
+  REFUNDED
+}
+
+enum TransactionType {
+  PAYMENT
+  REFUND
+}
+
+enum BookingType {
+  ONLINE
+  OFFLINE
+}
+
+enum BookingStatus {
+  PENDING
+  RESERVED
+  CHECKOUT
+}
+
+enum UserType {
+  ADMIN
+  USER
+}
