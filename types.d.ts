@@ -57,6 +57,12 @@ type ActionResponse<T> = {
   data?: T;
   error?: string;
 };
+type Booking = {
+  startDate: Date;
+  endDate:Date;
+  totalCost:number;
+  roomId:string;
+}
 enum UserType{
   "ADMIN",
   "USER"

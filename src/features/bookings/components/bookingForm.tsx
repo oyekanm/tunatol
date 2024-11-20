@@ -1,4 +1,6 @@
-import { DateRangeComponent } from '@/components'
+"use client"
+
+import { DateRangeComponent, PaystackPayment } from '@/components'
 import React from 'react'
 import ReservationCard from './reservationCard'
 
@@ -11,6 +13,7 @@ export default function BookingForm() {
       <div className='h-full'>
         <ReservationCard />
       </div>
+      <PaystackPayment />
     </div>
   )
 }
