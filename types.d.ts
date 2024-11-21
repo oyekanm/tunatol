@@ -3,8 +3,8 @@
    key: string;
    id?: string;
    roomId?: string;
-   createdAt: Date;
-   updatedAt: Date;
+   createdAt?: Date;
+   updatedAt?: Date;
 };
 type Guest ={
   type:"Adults" | "children" | "infants" | "pets";
@@ -39,18 +39,20 @@ type Room = {
   description:string;
   features:string[];
   id?:string;
-  discount_percent?:number;
-  available_announcement?:string;
+  discount_percent?:any;
+  available_announcement?:any;
   images:Image[];
   isAvailable:boolean
   // createdAt: Date;
   // updatedAt: Date;
 }
 type User = {
-  userId:string;
+  id:string;
+  userId?:string;
   name:string;
-  email:string
-  user_type:UserType
+  email:string;
+  user_type:UserType;
+  password?:string
 }
 type ActionResponse<T> = {
   success: boolean;
@@ -63,7 +65,7 @@ type Booking = {
   totalCost:number;
   roomId:string;
 }
-enum UserType{
+export enum UserType{
   "ADMIN",
   "USER"
 }

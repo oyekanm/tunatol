@@ -21,32 +21,49 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { roomSchema } from '@/lib/schema/roomSchema'
 import { X } from 'lucide-react'
+import { CreateRoom, UpdateRoom } from '@/actions/roomActions'
+import { RichTextEditor } from '@/components'
+import { useToast } from '@/hooks'
 
 type Props = {
     mutate: any;
-    data?: any;
+    data?: Room;
     editing?: boolean
 }
 
 export default function RoomForm({ editing, mutate, data }: Props) {
     const [features, setFeatures] = useState<string[]>([""])
-    const [available, setAvailable] = useState(false)
+    const [images, setImages] = useState<Image[]>([])
+    const [description, setDescription] = useState("")
+    const [available, setAvailable] = useState(true)
     const form = useForm<z.infer<typeof roomSchema>>({
         resolver: zodResolver(roomSchema),
         defaultValues: {
             name: "",
             description: "",
+            isAvailable: true,
+            price: 0,
+            images: []
         },
     })
+    const toast = useToast()
 
     useEffect(() => {
+        form.setValue('isAvailable', true)
         if (data) {
-            const { categoryId, description, features, github, name, Stacks, status, url, application } = data
-            const filteredStacks = Stacks.map((s: any) => s.id)
+            const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = data
+
             form.setValue('name', name)
             form.setValue('description', description)
             form.setValue('features', features)
+            form.setValue('available_announcement', available_announcement)
+            form.setValue('discount_percent', discount_percent)
+            form.setValue('isAvailable', isAvailable)
+            form.setValue('price', price)
+            form.setValue('images', images)
             setFeatures(features)
+            setAvailable(isAvailable)
+            setImages(images)
         }
     }, [data])
 
@@ -78,17 +95,75 @@ export default function RoomForm({ editing, mutate, data }: Props) {
     const getImageData = async (imageData: any) => {
         console.log(imageData)
         form.setValue("images", imageData)
-
+        setImages(imageData)
     }
     const onChange = (bool: boolean) => {
         setAvailable(bool)
-        // console.log(bool)
-        // if (bool) {
-        //     form.setValue("status", "APP")
-        // } else {
-        //     form.setValue("status", "NOAPP")
-        // }
+        form.setValue("isAvailable", bool)
 
+    }
+    const changeDesc = (desc: string) => {
+        setDescription(desc)
+        form.setValue('description', desc)
+    }
+
+    console.log(form.getValues())
+    console.log(form.formState.errors.features)
+
+    const addRoom = async (formdata: z.infer<typeof roomSchema>) => {
+        const result = roomSchema.safeParse(formdata)
+        const id: any = data?.id
+        // console.log(result)
+
+        if (result.success) {
+            if (editing) {
+                const response = await UpdateRoom(result.data, id)
+
+                // error handling
+                if (response.success === false) {
+                    console.log(response?.error)
+                    toast({
+                        status: 'error',
+                        text: response?.error,
+                        clx: "bg-red-500"
+                    });
+                    return;
+                }
+                // data successfully recieved
+                if (response.success) {
+                    toast({
+                        status: 'success',
+                        text: 'Action completed successfully!',
+                        clx: "bg-green-500"
+                    });
+                    form.reset()
+                }
+            } else {
+                const response = await CreateRoom(result.data)
+
+                // error handling
+                if (response.success === false) {
+                    console.log(response?.error)
+                    toast({
+                        status: 'error',
+                        text: response?.error,
+                        clx: "bg-red-500"
+                    });
+                    return;
+                }
+                // data successfully recieved
+                if (response.success) {
+                    toast({
+                        status: 'success',
+                        text: 'Action completed successfully!',
+                        clx: "bg-green-500"
+                    });
+                    form.reset()
+                }
+            }
+        } else {
+            console.log(result.error)
+        }
     }
 
     const labelClass = "font-semibold text-[2rem] text-slate-700 block mb-2 dark:text-white"
@@ -97,16 +172,32 @@ export default function RoomForm({ editing, mutate, data }: Props) {
     // console.log(form.getValues(), editing)
     return (
         <Form {...form} >
-            <div className="mt-5 p-4 z-10 bg-white border rounded-xl sm:mt-10 md:p-10 dark:bg-neutral-900 dark:border-neutral-700">
+            <div className="mt-5 p-4 z-10  bg-white border rounded-xl sm:mt-10 md:p-10 dark:bg-neutral-900 dark:border-neutral-700">
                 <form
-                    // onSubmit={form.handleSubmit(mutateSize)}
+                    onSubmit={form.handleSubmit(addRoom)}
                     className="space-y-8">
                     <div className='gap-y-12 md:gap-8 grid  md:grid-cols-2 items-start '>
                         <div className='grid gap-4'>
                             {
                                 RoomInput.map(size => {
-                                    return (
-                                        <FormField
+                                    if (size.name === "description") {
+                                        return (<FormField
+                                            key={size.id}
+                                            // control={form.control}
+                                            name={size.name}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel className={labelClass} >{size.label}</FormLabel>
+                                                    <FormControl>
+                                                        <RichTextEditor content={description} onChange={changeDesc} clx={`text-[1.8rem] w-full ${description && "h-[200px]"} overflow-auto  font-medium placeholder:text-[1.5rem]`} />
+                                                        {/* <Input type={size.type} placeholder={size.placeholder} {...field} className={inputClass} /> */}
+                                                    </FormControl>
+                                                    <FormMessage className='text-[1.4rem]' />
+                                                </FormItem>
+                                            )}
+                                        />)
+                                    } else {
+                                        return (<FormField
                                             key={size.id}
                                             // control={form.control}
                                             name={size.name}
@@ -120,10 +211,12 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                                                 </FormItem>
                                             )}
                                         />)
+                                    }
 
                                 })
                             }
-                             <div className="flex items-center space-x-2">
+
+                            <div className="flex items-center space-x-2">
                                 <Switch checked={available} onCheckedChange={onChange} id="airplane-mode" />
                                 <FormLabel className={`${labelClass} cursor-pointer`} htmlFor="airplane-mode">Room Available</FormLabel>
                             </div>
@@ -147,12 +240,15 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                                         </div>
                                     </div>
                                 </Modal>
+                                <FormMessage className='text-[1.4rem]' >{form.formState.errors.features.message} </FormMessage>
                             </div>
                             <div className='h-[200px]'>
                                 <UploadImageComp fileUpload={getImageData} rootFolder='rooms' />
+                                <FormMessage className='text-[1.4rem]' >{form.formState.errors.images?.message} </FormMessage>
                             </div>
+
                             <div className='h-[350px]'>
-                                <ImageCarousel files={""} showTexts={false} />
+                                <ImageCarousel files={images} showTexts={false} />
                             </div>
                         </div>
                     </div>

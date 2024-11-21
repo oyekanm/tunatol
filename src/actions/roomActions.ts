@@ -8,7 +8,7 @@ import { validateRoomOwnership } from "@/utils/validations";
 // TODO: create aa useable auth check
 
 export async function CreateRoom(
-  FormData: FormData
+  room: Room
 ): Promise<ActionResponse<Room>> {
   const { userId, user_type } = await useCurrentUser();
   const {
@@ -20,16 +20,7 @@ export async function CreateRoom(
     available_announcement,
     discount_percent,
     isAvailable,
-  }: Room = {
-    name: FormData.get("title") as string,
-    price: Number(FormData.get("price")) as number,
-    description: FormData.get("description") as string,
-    images: FormData.get("images") as any,
-    features: FormData.get("features") as any,
-    available_announcement: FormData.get("available_announcement") as string,
-    discount_percent: Number(FormData.get("discount_percent")) as number,
-    isAvailable: FormData.get("isAvailable") as any,
-  };
+  } = room
 
   try {
     // check db for incoming product details
@@ -96,7 +87,7 @@ export async function CreateRoom(
     };
   }
 }
-export async function UpdateRoom(FormData: FormData, id: string) {
+export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<Room>> {
   const { userId, user_type } = await useCurrentUser();
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const {
@@ -108,16 +99,7 @@ export async function UpdateRoom(FormData: FormData, id: string) {
     available_announcement,
     discount_percent,
     isAvailable,
-  }: Room = {
-    name: FormData.get("title") as string,
-    price: Number(FormData.get("price")) as number,
-    description: FormData.get("description") as string,
-    images: FormData.get("images") as any,
-    features: FormData.get("features") as any,
-    available_announcement: FormData.get("available_announcement") as string,
-    discount_percent: Number(FormData.get("discount_percent")) as number,
-    isAvailable: FormData.get("isAvailable") as any,
-  };
+  } = room
 
   try {
     // check the user coming in first
@@ -152,7 +134,7 @@ export async function UpdateRoom(FormData: FormData, id: string) {
       };
     }
 
-    // create products
+    // update products
     const updatedRoom = await prisma.room.update({
       where: { id },
       data: {
@@ -178,7 +160,7 @@ export async function UpdateRoom(FormData: FormData, id: string) {
         images: true,
       },
     });
-    return { success: true, data: updatedRoom };
+    return { success: true, data: updatedRoom as Room };
   } catch (error) {
     console.log(error);
     console.error("Room update error:", error);

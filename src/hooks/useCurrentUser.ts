@@ -1,8 +1,12 @@
-export default async function useCurrentUser ():Promise<User> {
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+
+export default async function useCurrentUser ():Promise<Partial<User>> {
+    const session:{ user:User,expires: any} | null = await getServerSession(authOptions);
     return{
-        name:"bolu",
-        userId:"id",
-        email:"@gmail.com",
-        user_type:UserType.ADMIN
+        name:session?.user?.name as string,
+        userId:session?.user?.id as string,
+        email:session?.user?.email as string ,
+        user_type:session?.user.user_type as UserType
     }
 }

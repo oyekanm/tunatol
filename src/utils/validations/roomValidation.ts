@@ -1,6 +1,6 @@
 import { prisma } from "@/lib";
 
-export default async function validateRoomOwnership(userId: string, roomId: string) {
+export default async function validateRoomOwnership(userId?: string, roomId?: string) {
     const room = await prisma.room.findUnique({
       where: { id: roomId },
       select: { userId: true }

@@ -66,7 +66,7 @@ export const userInputs = [
     },
     {
       id: 4,
-      label: "Description",
+      label: "Description(edit this content how you want it to look to users)",
       type: "text",
       placeholder: "write a description for the for the room",
       name:"description"
@@ -79,6 +79,7 @@ export const userInputs = [
       name:"available_announcement"
     },
   ];
+   
   export const roomFeatureInput = [
     {
       id: 1,

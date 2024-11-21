@@ -5,7 +5,7 @@ import { z } from "zod";
 export const roomSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2, "name must be atleast 2 characters"),
-  description: z.string().min(2, "name must be atleast 2 characters"),
+  description: z.string().min(2, "description must be atleast 10 characters"),
   price: z.coerce
     .number()
     .gte(1, { message: "Price value must be atleast 1 character" }),
@@ -18,7 +18,8 @@ export const roomSchema = z.object({
       key: z.string(),
       url: z.string(),
     })
-  ),
+  ).min(1,"image is Required"),
+  isAvailable:z.boolean()
 });
 export const bookingSchema = z.object({
   id: z.string().optional(),

@@ -1,4 +1,4 @@
-// firebase-storage.ts (or useUploadToFirebase.ts)
+"use client"
 
 import { useState, useEffect } from 'react';
 import { uploadBytesResumable, getDownloadURL, ref } from 'firebase/storage';

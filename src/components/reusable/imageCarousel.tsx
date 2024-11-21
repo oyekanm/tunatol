@@ -13,7 +13,7 @@ import Link from 'next/link'
 import Button from './button'
 
 type Props = {
-  files: any;
+  files: Image[];
   showTexts: boolean
 }
 
@@ -26,7 +26,7 @@ const files = [
 const arrowStyle = "h-[100%] px-10 bg-transparent rounded-none hover:bg-[rgba(0,0,0,.3)] border-none"
 const btnTextStyle ="h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
 
-export default function ImageCarousel({ showTexts }: Props) {
+export default function ImageCarousel({ showTexts,files }: Props) {
   return (
     <section className='relative h-full'>
       <Carousel
@@ -42,9 +42,9 @@ export default function ImageCarousel({ showTexts }: Props) {
         className='relative h-full'
       >
         <CarouselContent className="h-full">
-          {files?.map((file, index) => (
-            <CarouselItem key={index} className="relative md:basis-full ">
-              <Image alt={file} src={file} width={300} height={300}
+          {files?.map((file) => (
+            <CarouselItem key={file.key} className="relative md:basis-full ">
+              <Image alt={file.url} src={file.url} width={300} height={300}
                 className="w-full h-full"
 
               />
