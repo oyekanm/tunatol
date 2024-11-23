@@ -65,7 +65,7 @@ type Booking = {
   totalCost:number;
   roomId:string;
 }
-export enum UserType{
+ enum UserType{
   "ADMIN",
   "USER"
 }

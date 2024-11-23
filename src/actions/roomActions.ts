@@ -6,11 +6,16 @@ import { deleteFirebaseFile } from "@/utils";
 import { validateRoomOwnership } from "@/utils/validations";
 
 // TODO: create aa useable auth check
+enum UserType{
+  "ADMIN",
+  "USER"
+}
 
 export async function CreateRoom(
   room: Room
 ): Promise<ActionResponse<Room>> {
   const { userId, user_type } = await useCurrentUser();
+  const user: any = "ADMIN"
   const {
     description,
     features,
@@ -22,6 +27,7 @@ export async function CreateRoom(
     isAvailable,
   } = room
 
+  console.log(user,user_type)
   try {
     // check db for incoming product details
     const unique = await prisma.room.findFirst({
@@ -46,7 +52,7 @@ export async function CreateRoom(
     }
 
     // Check if user is admin
-    if (user_type !== UserType.ADMIN) {
+    if (user_type !== user) {
       return {
         success: false,
         error: "Only admins can create rooms",
@@ -89,6 +95,7 @@ export async function CreateRoom(
 }
 export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<Room>> {
   const { userId, user_type } = await useCurrentUser();
+  const user: any = UserType.ADMIN
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const {
     description,
@@ -112,7 +119,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
     }
 
     // Check if user is admin
-    if (user_type !== UserType.ADMIN) {
+    if (user_type !== user) {
       return {
         success: false,
         error: "Only admins can update rooms",
@@ -175,6 +182,7 @@ export async function DeleteResource(
   id: string
 ): Promise<ActionResponse<string>> {
   const { userId, user_type } = await useCurrentUser();
+  const user: any = UserType.ADMIN
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const images = await prisma.image.findMany({
     where: { roomId: id },
@@ -204,7 +212,7 @@ export async function DeleteResource(
     }
 
     // Check if user is admin
-    if (user_type !== UserType.ADMIN) {
+    if (user_type !== user) {
       return {
         success: false,
         error: "Unauthorized. Admin access required.",

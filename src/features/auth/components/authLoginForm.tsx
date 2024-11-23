@@ -17,13 +17,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { FormSubmitButton } from "@/components/form";
 
 const FormSchema = z.object({
   email: z.string().email({
     message: "Invalid email address.",
   }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
+  password: z.string().min(4, {
+    message: "Password must be at least 4 characters.",
   }),
 });
 
@@ -62,35 +63,40 @@ export default function AuthLoginForm() {
       }
       // Process response here
       console.log("Login Successful", response);
-    //   toast({ title: "Login Successful" });
+      //   toast({ title: "Login Successful" });
     } catch (error: any) {
       console.error("Login Failed:", error);
-    //   toast({ title: "Login Failed", description: error.message });
+      //   toast({ title: "Login Failed", description: error.message });
     }
   };
 
+  const labelClass = "font-semibold text-[1.4rem] text-slate-700 block mb-2 dark:text-white"
+  const inputClass = "!py-6 rounded-[5px] text-gray-700 !p-4 text-[1.4rem] focus-visible:!outline-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500"
+
+
   return (
-    <Form {...form} 
+    <Form {...form}
     // className="w-2/3 space-y-6"
     >
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="text-white p-4 md:p-16 border-[1.5px] rounded-lg border-gray-300 flex flex-col items-center justify-center gap-y-6"
+        className="flex flex-col  gap-y-2"
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Provide Email</FormLabel>
+            <FormItem className="space-y-0">
+              <FormLabel className={labelClass} >Provide Email</FormLabel>
               <FormControl>
                 <Input
-                  className="text-black"
+                  className={inputClass}
                   placeholder="Provide Email"
                   {...field}
                   type="text"
                 />
               </FormControl>
+              <FormMessage className='text-[1.4rem]' />
             </FormItem>
           )}
         />
@@ -98,26 +104,25 @@ export default function AuthLoginForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Provide Password</FormLabel>
+            <FormItem className="space-y-0">
+              <FormLabel className={labelClass}>Provide Password</FormLabel>
               <FormControl>
                 <Input
-                  className="text-black"
+                  className={inputClass}
                   placeholder="Hasło"
                   {...field}
                   type="password"
                 />
               </FormControl>
+              <FormMessage className='text-[1.4rem]' />
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className="hover:scale-110 hover:bg-cyan-700"
-          disabled={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? "Opening...." : "Open Sesame!"}
-        </Button>
+        <FormSubmitButton
+          // loading={false}
+          className='w-full'
+          loading={form.formState.isSubmitting}
+          text="Continue" />
       </form>
     </Form>
   );

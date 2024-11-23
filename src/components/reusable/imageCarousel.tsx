@@ -14,7 +14,8 @@ import Button from './button'
 
 type Props = {
   files: Image[];
-  showTexts: boolean
+  showTexts: boolean;
+  duration?:number
 }
 
 const files = [
@@ -26,7 +27,7 @@ const files = [
 const arrowStyle = "h-[100%] px-10 bg-transparent rounded-none hover:bg-[rgba(0,0,0,.3)] border-none"
 const btnTextStyle ="h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
 
-export default function ImageCarousel({ showTexts,files }: Props) {
+export default function ImageCarousel({ showTexts,files, duration }: Props) {
   return (
     <section className='relative h-full'>
       <Carousel
@@ -36,7 +37,7 @@ export default function ImageCarousel({ showTexts,files }: Props) {
         }}
         plugins={[
           Autoplay({
-            delay: 5000,
+            delay: duration || 5000,
           }),
         ]}
         className='relative h-full'
@@ -49,7 +50,7 @@ export default function ImageCarousel({ showTexts,files }: Props) {
 
               />
               <div
-                className="absolute inset-0 bg-gradient-to-r from-[rgba(0,0,0,.4)] to-[rgba(0,0,0,.6)] "
+                className="absolute inset-0 bg-gradient-to-r from-[rgba(0,0,0,.3)] to-[rgba(0,0,0,.5)] "
               />
             </CarouselItem>
           ))}

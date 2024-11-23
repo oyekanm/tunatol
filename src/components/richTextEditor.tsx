@@ -1,6 +1,6 @@
 "use client"
-import React from 'react'
-import { useEditor, EditorContent } from '@tiptap/react'
+import React, { useCallback, useEffect } from 'react'
+import { useEditor, EditorContent,Editor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Bold, Italic, List, Heading1, Heading2 } from 'lucide-react'
 import { cn } from '@/lib'
@@ -13,7 +13,7 @@ type EditorProps = {
     clx?:string
 }
 
-const MenuBar = ({ editor }:any) => {
+const MenuBar = ({ editor }:{editor:Editor | null}) => {
   if (!editor) {
     return null
   }
@@ -72,12 +72,35 @@ const MenuBar = ({ editor }:any) => {
 const RichTextEditor = ({ content, onChange,clx }:EditorProps) => {
   const editor = useEditor({
     extensions: [StarterKit],
+    immediatelyRender:false,
     content: content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },
     // editorProps
   })
+
+  const loadStoredContent = useCallback(() => {
+    if (!editor) return;
+
+    try {
+      const savedData = JSON.parse(localStorage.getItem("room") || '{}');
+      
+      if (savedData.description) {
+        editor.commands.setContent(savedData.description);
+      }
+    } catch (error) {
+      console.error('Error loading editor content:', error);
+    } finally {
+      // setIsLoading(false);
+    }
+  }, [editor]);
+
+  useEffect(() => {
+    if (editor) {
+      loadStoredContent();
+    }
+  }, [editor, loadStoredContent]);
 
   return (
     <div className="border rounded-md ">

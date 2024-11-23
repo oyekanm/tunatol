@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input";
 import { RegisterUser } from "@/actions/authActions";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks";
+import { useRouter } from "next/navigation";
+import { FormSubmitButton } from "@/components/form";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -35,6 +37,7 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export default function AuthRegisterForm() {
+  const router = useRouter();
   const toast = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -62,33 +65,42 @@ export default function AuthRegisterForm() {
       const response = await RegisterUser(user)
       if (!response.success) {
         console.log(response.error)
+        toast({ text: response.error, status: "error" });
         // throw new Error("Network response was not ok");
         // throw new Error(response.error);
       }
+
       // Process response here
-      console.log("Registration Successful", response);
+      toast({ text: "Registration Successful", duration: 1500, status: "success" });
+
+      // console.log("Registration Successful", response);
       await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
-      //   toast({ title: "Registration Successful" });
+      router.push("/");
+      router.refresh();
     } else {
       console.log(result.error)
     }
   };
 
+  const labelClass = "font-semibold text-[1.4rem] text-slate-700 block mb-2 dark:text-white"
+  const inputClass = "!py-6 rounded-[5px] text-gray-700 !p-4 text-[1.4rem] focus-visible:!outline-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500"
+
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className={labelClass}>Username</FormLabel>
               <FormControl>
-                <Input placeholder="Username" {...field} />
+                <Input placeholder="Username" {...field} className={inputClass} />
               </FormControl>
               <FormMessage className='text-[1.4rem]' />
             </FormItem>
@@ -99,9 +111,9 @@ export default function AuthRegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className={labelClass}>Email</FormLabel>
               <FormControl>
-                <Input placeholder="smith@gmail.com" {...field} />
+                <Input className={inputClass} placeholder="smith@gmail.com" {...field} />
               </FormControl>
               <FormMessage className='text-[1.4rem]' />
             </FormItem>
@@ -112,9 +124,9 @@ export default function AuthRegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className={labelClass}>Password</FormLabel>
               <FormControl>
-                <Input placeholder="Password" {...field} type="password" />
+                <Input className={inputClass} placeholder="Password" {...field} type="password" />
               </FormControl>
               <FormMessage className='text-[1.4rem]' />
             </FormItem>
@@ -125,15 +137,19 @@ export default function AuthRegisterForm() {
           name="c_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel className={labelClass}>Confirm Password</FormLabel>
               <FormControl>
-                <Input placeholder="Retype your Password" {...field} type="password" />
+                <Input className={inputClass} placeholder="Retype your Password" {...field} type="password" />
               </FormControl>
               <FormMessage className='text-[1.4rem]' />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <FormSubmitButton
+          // loading={false}
+          className='w-full'
+          loading={form.formState.isSubmitting}
+          text="Continue" />
       </form>
     </Form>
   );

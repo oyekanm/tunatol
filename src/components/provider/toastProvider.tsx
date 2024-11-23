@@ -31,13 +31,14 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     setToastQueue(filteredToast)
   }
 
+
   const toast = (props: ToastProps) => {
     const newToast = {
       status: props.status || 'normal',
       text: props.text || '',
       click: props.click,
       clickText: props.clickText,
-      duration: props.duration || 60000,
+      duration: props.duration || 3000,
       clx: props.clx
     };
 
@@ -52,7 +53,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toast }}>
       {children}
-      <div className='absolute top-8 right-4 sm:right-12 grid gap-2'>
+      <div className='fixed z-[999] top-8 right-4 sm:right-12 grid gap-2'>
         {toastQueue.map((toastItem, index) => (
           <Toast
             key={index}

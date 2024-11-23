@@ -24,6 +24,7 @@ import { X } from 'lucide-react'
 import { CreateRoom, UpdateRoom } from '@/actions/roomActions'
 import { RichTextEditor } from '@/components'
 import { useToast } from '@/hooks'
+import { useRouter } from 'next/navigation'
 
 type Props = {
     mutate: any;
@@ -42,14 +43,34 @@ export default function RoomForm({ editing, mutate, data }: Props) {
             name: "",
             description: "",
             isAvailable: true,
-            price: 0,
-            images: []
+            price: "" as any,
+            images: [],
+            available_announcement: "",
+            discount_percent: "" as any,
+            features: []
         },
     })
     const toast = useToast()
 
     useEffect(() => {
         form.setValue('isAvailable', true)
+        const lsroom = JSON.parse(localStorage.getItem("room") || "")
+        if (lsroom) {
+            const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = lsroom
+
+            form.setValue('name', name)
+            form.setValue('description', description)
+            form.setValue('features', features)
+            form.setValue('available_announcement', available_announcement)
+            form.setValue('discount_percent', discount_percent)
+            form.setValue('isAvailable', isAvailable)
+            form.setValue('price', price)
+            form.setValue('images', images)
+            setFeatures(features)
+            setAvailable(isAvailable)
+            setImages(images)
+            setDescription(description)
+        }
         if (data) {
             const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = data
 
@@ -64,6 +85,7 @@ export default function RoomForm({ editing, mutate, data }: Props) {
             setFeatures(features)
             setAvailable(isAvailable)
             setImages(images)
+            setDescription(description)
         }
     }, [data])
 
@@ -79,6 +101,7 @@ export default function RoomForm({ editing, mutate, data }: Props) {
         form.setValue("features", newFeatures)
 
         setFeatures(newFeatures)
+        localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
     const onchangeText = (e: any, index: number) => {
         // console.log(e.target.value, index)
@@ -91,28 +114,38 @@ export default function RoomForm({ editing, mutate, data }: Props) {
         // console.log(newFeatures, newFeatures[index])
 
         setFeatures(newFeatures)
+        localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
     const getImageData = async (imageData: any) => {
         console.log(imageData)
-        form.setValue("images", imageData)
-        setImages(imageData)
+        const newImages = [...images, ...imageData]
+
+        form.setValue("images", newImages)
+        setImages(newImages)
+        localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
     const onChange = (bool: boolean) => {
         setAvailable(bool)
         form.setValue("isAvailable", bool)
-
+        localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
     const changeDesc = (desc: string) => {
         setDescription(desc)
         form.setValue('description', desc)
+        localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
 
-    console.log(form.getValues())
-    console.log(form.formState.errors.features)
+    // console.log(JSON.parse(localStorage.getItem("room")))
+    // console.log(JSON.stringify(form.getValues()))
+    // console.log(form.formState.errors.features)
+    console.log(description)
 
+    const router = useRouter()
     const addRoom = async (formdata: z.infer<typeof roomSchema>) => {
         const result = roomSchema.safeParse(formdata)
         const id: any = data?.id
+
+
         // console.log(result)
 
         if (result.success) {
@@ -125,7 +158,6 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                     toast({
                         status: 'error',
                         text: response?.error,
-                        clx: "bg-red-500"
                     });
                     return;
                 }
@@ -134,9 +166,11 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                     toast({
                         status: 'success',
                         text: 'Action completed successfully!',
-                        clx: "bg-green-500"
                     });
                     form.reset()
+                    setImages([])
+                    setFeatures([])
+                    setDescription("")
                 }
             } else {
                 const response = await CreateRoom(result.data)
@@ -147,7 +181,6 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                     toast({
                         status: 'error',
                         text: response?.error,
-                        clx: "bg-red-500"
                     });
                     return;
                 }
@@ -156,11 +189,16 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                     toast({
                         status: 'success',
                         text: 'Action completed successfully!',
-                        clx: "bg-green-500"
                     });
                     form.reset()
+                    setImages([])
+                    setFeatures([])
+                    setDescription("")
                 }
             }
+            localStorage.removeItem("room")
+            router.push("/admin/rooms/");
+            router.refresh()
         } else {
             console.log(result.error)
         }
@@ -240,7 +278,7 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                                         </div>
                                     </div>
                                 </Modal>
-                                <FormMessage className='text-[1.4rem]' >{form.formState.errors.features.message} </FormMessage>
+                                <FormMessage className='text-[1.4rem]' >{form.formState.errors?.features?.message} </FormMessage>
                             </div>
                             <div className='h-[200px]'>
                                 <UploadImageComp fileUpload={getImageData} rootFolder='rooms' />

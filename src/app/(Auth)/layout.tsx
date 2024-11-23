@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import { ToastProvider } from "@/components/provider";
 import { Toast } from "@/components/reusable";
 import { useCurrentUser } from "@/hooks";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export const metadata = {
@@ -16,15 +17,20 @@ export default async function RootLayout({
 }) {
   const current = await useCurrentUser()
 
-  if (current) {
-      redirect("/");
-    }
+  if (current.email) {
+    redirect("/");
+  }
   return (
     <html lang="en">
       <body>
         <ToastProvider>
           <main className="relative bg-gray-400 h-screen grid items-center">
-            {children}
+            <section>
+              <div className="w-full mx-auto grid gap-4 bg-white max-w-[50rem] shadow-[0_0_15px_5px_rgba(0,0,0,.8)] p-4 px-8 rounded-[10px]">
+                <Image className="w-[200px] h-[80px] mx-auto block" src={"/assets/image/tunatol.jpg"} alt="Tunatol eden logo" width={200} height={200} />
+                {children}
+              </div>
+            </section>
           </main>
         </ToastProvider>
       </body>

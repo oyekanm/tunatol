@@ -107,3 +107,7 @@ html{
   transform: translate(-50%, -50%);
   text-align: center;
 }
+.prose :where(p):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  margin-top: 0;
+  margin-bottom: 0;
+}

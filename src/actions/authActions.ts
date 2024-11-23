@@ -1,7 +1,15 @@
 "use server";
 
+import { useCurrentUser } from "@/hooks";
 import { prisma } from "@/lib";
 import { hash } from "bcryptjs";
+import { sign } from 'jsonwebtoken';
+
+
+enum UserType{
+  "ADMIN",
+  "USER"
+}
 
 export async function RegisterUser(user: {
   email: string;
@@ -38,4 +46,32 @@ export async function RegisterUser(user: {
       error: `error while registering user`,
     };
   }
+}
+
+export async function GetStorageToke() {
+  const {userId,user_type} = await useCurrentUser()
+  const user: any = UserType.ADMIN
+
+  if (!userId) {
+    return { error: 'Unauthorized' };
+  }
+  
+    // Check if user is admin
+    if (user_type !== user) {
+      return {
+        error: "Only admins can get this token",
+      };
+    }
+  
+  // Create a custom token with user info
+  const token = sign(
+    {
+      uid: userId,
+      role: user_type,
+      exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour expiry
+    },
+    process.env.STORAGE_TOKEN_SECRET as any
+  );
+  
+  return { token };
 }
