@@ -82,6 +82,7 @@ export async function CreateRoom(
       },
       include: {
         images: true,
+        Reviews:true
       },
     });
     return { success: true, data: newRoom as Room };
@@ -95,7 +96,7 @@ export async function CreateRoom(
 }
 export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<Room>> {
   const { userId, user_type } = await useCurrentUser();
-  const user: any = UserType.ADMIN
+  const user: any = "ADMIN"
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const {
     description,
@@ -165,6 +166,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
       },
       include: {
         images: true,
+        Reviews:true
       },
     });
     return { success: true, data: updatedRoom as Room };
@@ -182,7 +184,7 @@ export async function DeleteResource(
   id: string
 ): Promise<ActionResponse<string>> {
   const { userId, user_type } = await useCurrentUser();
-  const user: any = UserType.ADMIN
+  const user: any = "ADMIN"
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const images = await prisma.image.findMany({
     where: { roomId: id },
