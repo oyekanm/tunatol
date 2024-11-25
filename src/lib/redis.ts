@@ -6,7 +6,7 @@ const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 // Cache duration in seconds
 const DEFAULT_CACHE_TIME = 3600; // 1 hour
-const EXTENDED_CACHE_TIME = 86400; // 24 hours
+// const EXTENDED_CACHE_TIME = 86400; // 24 hours
 
 interface CacheOptions {
   duration?: number;
