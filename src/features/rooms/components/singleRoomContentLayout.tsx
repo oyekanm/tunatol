@@ -1,3 +1,4 @@
+import { ReviewCard } from '@/components/reusable';
 import { BookingCalenderCheckout, ReservationCard } from '@/features/bookings/components'
 
 type Props = {

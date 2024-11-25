@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation"
 
 export default function useSignOut() {
     // const router = useRouter();
-    const logout = ()=>{
+    const logout = async()=>{
+      // const {url} = await signOut({redirect: false, callbackUrl: "/foo"})
         signOut({ callbackUrl: '/' })
         // router.push(data.url)
     }

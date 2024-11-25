@@ -12,9 +12,9 @@ export default function BookingCalenderCheckout({ room }: Props) {
     const { description, features, isAvailable, name, price, available_announcement, discount_percent } = room
     return (
         <div className='grid gap-8'>
-            <div>
+            <div className='grid gap-4'>
                 <p className='text-[1.8rem] font-semibold'>{name}</p>
-                <div className='p-4 shadow-[0_0_10px_rgba(0,0,0,.3)] mt-4 rounded-[1rem]'>
+                <div className='p-4 '>
                     <RichTextRenderer content={description} />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { ImageCarousel, Notfound } from '@/components/reusable'
+import { ImageCarousel, Notfound, ReviewCard } from '@/components/reusable'
 import { SingleRoomContentLayout } from '@/features/rooms/components'
 import { prisma } from '@/lib'
 import React from 'react'
@@ -28,6 +28,17 @@ export default async function page({ params }: Props) {
         <ImageCarousel  files={data?.images} />
       </div>
       <SingleRoomContentLayout room={data}/>
+      <section className='bg-gray-100 '>
+        <div className='overflow-auto flex  gap-4 py-8 space-x-4'>
+        <ReviewCard  />
+        <ReviewCard  />
+        <ReviewCard  />
+        <ReviewCard  />
+        <ReviewCard  />
+        <ReviewCard  />
+        <ReviewCard  />
+        </div>
+      </section>
     </div>
   )
 }
