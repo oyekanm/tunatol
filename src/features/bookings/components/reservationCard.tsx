@@ -1,7 +1,7 @@
 "use client"
 
 import { PaystackPayment } from '@/components'
-import { Button } from '@/components/reusable'
+import { Button, NairaSign } from '@/components/reusable'
 import React, { useState } from 'react'
 
 type Props = {
@@ -14,7 +14,7 @@ export default function ReservationCard({price}:Props) {
   ])
   return (
     <div className="text-start  flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800">
-      <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200">$60 <span className='font-normal text-[1.6rem]'>night</span></p>
+      <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200"><NairaSign/> {price} <span className='font-normal text-[1.6rem]'>night</span></p>
 
       <div className='border-[2px] rounded-[8px] cursor-pointer'>
         <div className='grid grid-cols-2 items-center'>
@@ -38,7 +38,7 @@ export default function ReservationCard({price}:Props) {
       <PaystackPayment />
       <ul>
         <li className='flex items-center justify-between'>
-          <span className='text-[1.4rem] font-medium underline'>${price} x  nights</span>
+          <span className='text-[1.4rem] font-medium underline'><NairaSign/> {price} x  nights</span>
           <span className='text-[1.2rem] font-semibold'>$120</span>
         </li>
       </ul>

@@ -25,7 +25,7 @@ export default async function page({ params }: Props) {
   return (
     <div>
       <div className='h-[80vh]'>
-        <ImageCarousel files={data?.images} />
+        <ImageCarousel  files={data?.images} />
       </div>
       <SingleRoomContentLayout room={data}/>
     </div>

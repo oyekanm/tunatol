@@ -64,12 +64,125 @@ const config: Config = {
   				ring: 'hsl(var(--sidebar-ring))'
   			}
   		},
+		  typography: {
+			DEFAULT: {
+			  css: {
+				// Customize colors
+				'--tw-prose-body': '#374151',
+				'--tw-prose-headings': '#111827',
+				'--tw-prose-links': '#2563eb',
+				'--tw-prose-bullets': '#6b7280',
+				
+				// Custom styles for specific elements
+				h1: {
+				  fontSize: '2.5rem',
+				  marginBottom: '2rem',
+				  fontWeight: '700',
+				},
+				h2: {
+				  fontSize: '2rem',
+				  marginBottom: '1.5rem',
+				  marginTop: '2rem',
+				},
+				// p: {
+				//   fontSize: '2rem',
+				//   marginBottom: '1.5rem',
+				//   marginTop: '2rem',
+				// },
+				'code::before': {
+				  content: '""', // Remove backticks
+				},
+				'code::after': {
+				  content: '""',
+				},
+				code: {
+				  color: '#ef4444',
+				  backgroundColor: '#fee2e2',
+				  padding: '0.2em 0.4em',
+				  borderRadius: '0.25rem',
+				  fontWeight: '400',
+				},
+				pre: {
+				  backgroundColor: '#1f2937',
+				  color: '#f9fafb',
+				  padding: '1rem',
+				  borderRadius: '0.5rem',
+				  overflow: 'auto',
+				},
+				'pre code': {
+				  backgroundColor: 'transparent',
+				  color: 'inherit',
+				  padding: '0',
+				},
+				blockquote: {
+				  borderLeftColor: '#3b82f6',
+				  backgroundColor: '#eff6ff',
+				  padding: '1rem',
+				  fontStyle: 'italic',
+				},
+				img: {
+				  borderRadius: '0.75rem',
+				  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+				},
+				a: {
+				  color: '#2563eb',
+				  textDecoration: 'none',
+				  '&:hover': {
+					color: '#1d4ed8',
+					textDecoration: 'underline',
+				  },
+				},
+				ul: {
+				  listStyleType: 'disc',
+				  marginTop: '1rem',
+				  marginBottom: '1rem',
+				  paddingLeft: '1.5rem',
+				},
+				ol: {
+				  listStyleType: 'decimal',
+				  marginTop: '1rem',
+				  marginBottom: '1rem',
+				  paddingLeft: '1.5rem',
+				},
+				// Add custom styles for tables
+				table: {
+				  borderCollapse: 'collapse',
+				  width: '100%',
+				  marginTop: '2rem',
+				  marginBottom: '2rem',
+				},
+				'thead th': {
+				  backgroundColor: '#f3f4f6',
+				  padding: '0.75rem',
+				  borderBottom: '2px solid #e5e7eb',
+				},
+				'tbody td': {
+				  padding: '0.75rem',
+				  borderBottom: '1px solid #e5e7eb',
+				},
+				// Custom spacing
+				'> :first-child': {
+				  marginTop: '0',
+				},
+				'> :last-child': {
+				  marginBottom: '0',
+				},
+			  },
+			},
+			// Custom size variant
+			'custom': {
+			  css: {
+				fontSize: '1.125rem',
+				lineHeight: '1.75',
+			  },
+			},
+		  },
+	  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		}
-  	}
   },
   plugins: [
 	require("tailwindcss-animate"),

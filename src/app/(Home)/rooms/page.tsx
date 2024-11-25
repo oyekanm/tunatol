@@ -8,9 +8,6 @@ export default async function Rooms() {
       images: true
     }
   })
-
-
-
   return (
     <>
       <section className="Container pt-[4rem]">

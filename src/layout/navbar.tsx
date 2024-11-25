@@ -1,5 +1,6 @@
 "use client"
 
+import { useSignOut } from '@/hooks'
 import { cn } from '@/lib'
 import { LogOut } from 'lucide-react'
 import Link from 'next/link'
@@ -12,9 +13,8 @@ type Props = {
 
 export default function Navbar({ session }: Props) {
     const path = usePathname()
-    const logout =()=>{
-        console.log("logout")
-    }
+    const {logout} = useSignOut()
+   
     return (
         <header className="flex flex-wrap  md:justify-start md:flex-nowrap z-50 w-full bg-white border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
             <nav className="relative  w-full mx-auto flex items-center justify-between gap-6 sm:gap-8 py-4 px-4 sm:px-6 lg:px-8">

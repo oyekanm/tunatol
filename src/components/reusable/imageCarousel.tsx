@@ -19,7 +19,7 @@ type Props = {
   showTexts?: boolean;
   duration?: number;
   moveBtn?: boolean;
-  session:Partial<User>
+  session?:Partial<User>
 }
 
 const files = [
@@ -82,7 +82,7 @@ export default function ImageCarousel({ showTexts = false, files, duration, move
             <Link href={"/rooms"} className="w-full">
               <Button text='Make Reservations' clx={`${btnTextStyle}`} />
             </Link>
-            {!session.email && <Link href={"/login"} className="w-full">
+            {!session?.email && <Link href={"/login"} className="w-full">
               <Button text='Get Started' clx={`${btnTextStyle}`} />
             </Link>}
           </div>
