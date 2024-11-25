@@ -1,8 +1,27 @@
 import { RoomDescComp } from "@/components";
+import { ImageCarousel } from "@/components/reusable";
+
+const files:Image[] = [
+  {
+    key:"/assets/Image/lux room.jpg",
+    url:"/assets/Image/lux room.jpg"
+  },
+  {
+    key:"/assets/Image/steven-ungermann.png",
+    url:"/assets/Image/steven-ungermann.png"
+  },
+  {
+    key:"/assets/Image/room.png",
+    url:"/assets/Image/room.png"
+  },
+]
 
 export default function Home() {
   return (
     <div className="bg-gray-50">
+      <div className='h-[80vh]'>
+          <ImageCarousel files={files} showTexts />
+        </div>
       <section className="Container pt-[4rem]">
         <p className={`text-[2rem] sm:text-[2.5rem] md:text-[3.6rem] text-center`}>
           All our room types are including complementary breakfast

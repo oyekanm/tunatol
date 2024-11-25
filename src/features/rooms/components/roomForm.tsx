@@ -28,11 +28,11 @@ import { useRouter } from 'next/navigation'
 
 type Props = {
     mutate: any;
-    data?: Room;
+    data?: any;
     editing?: boolean
 }
 
-export default function RoomForm({ editing, mutate, data }: Props) {
+export default function RoomForm({ editing, data }: Props) {
     const [features, setFeatures] = useState<string[]>([""])
     const [images, setImages] = useState<Image[]>([])
     const [description, setDescription] = useState("")
@@ -52,25 +52,9 @@ export default function RoomForm({ editing, mutate, data }: Props) {
     })
     const toast = useToast()
 
+    const lsroom = JSON.parse(localStorage.getItem("room") || "{}")
+    console.log(lsroom)
     useEffect(() => {
-        form.setValue('isAvailable', true)
-        const lsroom = JSON.parse(localStorage.getItem("room") || "")
-        if (lsroom) {
-            const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = lsroom
-
-            form.setValue('name', name)
-            form.setValue('description', description)
-            form.setValue('features', features)
-            form.setValue('available_announcement', available_announcement)
-            form.setValue('discount_percent', discount_percent)
-            form.setValue('isAvailable', isAvailable)
-            form.setValue('price', price)
-            form.setValue('images', images)
-            setFeatures(features)
-            setAvailable(isAvailable)
-            setImages(images)
-            setDescription(description)
-        }
         if (data) {
             const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = data
 
@@ -86,8 +70,32 @@ export default function RoomForm({ editing, mutate, data }: Props) {
             setAvailable(isAvailable)
             setImages(images)
             setDescription(description)
+            localStorage.setItem("room",JSON.stringify(form.getValues()))
         }
     }, [data])
+
+    useEffect(()=>{
+        
+        if (lsroom) {
+            const { available_announcement, description, discount_percent, features, id, images, isAvailable, name, price, } = lsroom
+
+            form.setValue('name', name)
+            form.setValue('description', description)
+            form.setValue('features', features)
+            form.setValue('available_announcement', available_announcement)
+            form.setValue('discount_percent', discount_percent)
+            form.setValue('isAvailable', isAvailable)
+            form.setValue('price', price)
+            form.setValue('images', images)
+            setFeatures(features)
+            setAvailable(isAvailable)
+            setImages(images)
+            setDescription(description)
+            return;
+        }
+        form.setValue('isAvailable', true)
+    },[])
+
 
     const addFeature = () => {
         setFeatures((prev: any) => {
@@ -117,8 +125,9 @@ export default function RoomForm({ editing, mutate, data }: Props) {
         localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
     const getImageData = async (imageData: any) => {
-        console.log(imageData)
         const newImages = [...images, ...imageData]
+        
+        console.log(newImages)
 
         form.setValue("images", newImages)
         setImages(newImages)
@@ -136,9 +145,9 @@ export default function RoomForm({ editing, mutate, data }: Props) {
     }
 
     // console.log(JSON.parse(localStorage.getItem("room")))
-    // console.log(JSON.stringify(form.getValues()))
     // console.log(form.formState.errors.features)
-    console.log(description)
+    console.log(images)
+    // console.log(JSON.stringify(form.getValues()))
 
     const router = useRouter()
     const addRoom = async (formdata: z.infer<typeof roomSchema>) => {
@@ -265,7 +274,7 @@ export default function RoomForm({ editing, mutate, data }: Props) {
                                     <div>
                                         <p className={labelClass}>Add Project features</p>
                                         <div className='grid gap-8'>
-                                            {features.map((feat, index) => {
+                                            {features?.map((feat, index) => {
                                                 return (
                                                     <div key={index} className='flex gap-8 items-center'>
                                                         <FormControl className='flex-5'>

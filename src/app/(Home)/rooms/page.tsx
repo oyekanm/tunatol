@@ -1,7 +1,16 @@
 import { RoomCard } from "@/features/rooms/components";
-import React from "react";
+import { prisma } from "@/lib";
 
-export default function Rooms() {
+export default async function Rooms() {
+
+  const rooms: any = await prisma.room.findMany({
+    include: {
+      images: true
+    }
+  })
+
+
+
   return (
     <>
       <section className="Container pt-[4rem]">
@@ -17,10 +26,12 @@ export default function Rooms() {
       </section>
       <section className="Container">
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-4 my-8">
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
-          <RoomCard />
+          {
+            rooms.map((room: any) => {
+
+              return <RoomCard key={room.id} room={room} />
+            })
+          }
         </div>
       </section>
     </>

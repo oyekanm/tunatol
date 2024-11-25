@@ -1,120 +1,112 @@
+"use client"
+
+import { cn } from '@/lib'
+import { LogOut } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
-export default function Navbar() {
+type Props = {
+    session: Partial<User>
+}
+
+export default function Navbar({ session }: Props) {
+    const path = usePathname()
+    const logout =()=>{
+        console.log("logout")
+    }
     return (
-        <header className="md:absolute relative bg-white md:bg-transparent py-8 top-0 left-0 right-0 z-50 dark:bg-gray-900">
-            <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
-                    <div className="flex-1 md:flex md:items-center md:gap-12">
-                        <a className="block text-teal-600 dark:text-teal-300" href="#">
-                            <span className="sr-only">Home</span>
-                            <svg className="h-8" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M0.41 10.3847C1.14777 7.4194 2.85643 4.7861 5.2639 2.90424C7.6714 1.02234 10.6393 0 13.695 0C16.7507 0 19.7186 1.02234 22.1261 2.90424C24.5336 4.7861 26.2422 7.4194 26.98 10.3847H25.78C23.7557 10.3549 21.7729 10.9599 20.11 12.1147C20.014 12.1842 19.9138 12.2477 19.81 12.3047H19.67C19.5662 12.2477 19.466 12.1842 19.37 12.1147C17.6924 10.9866 15.7166 10.3841 13.695 10.3841C11.6734 10.3841 9.6976 10.9866 8.02 12.1147C7.924 12.1842 7.8238 12.2477 7.72 12.3047H7.58C7.4762 12.2477 7.376 12.1842 7.28 12.1147C5.6171 10.9599 3.6343 10.3549 1.61 10.3847H0.41ZM23.62 16.6547C24.236 16.175 24.9995 15.924 25.78 15.9447H27.39V12.7347H25.78C24.4052 12.7181 23.0619 13.146 21.95 13.9547C21.3243 14.416 20.5674 14.6649 19.79 14.6649C19.0126 14.6649 18.2557 14.416 17.63 13.9547C16.4899 13.1611 15.1341 12.7356 13.745 12.7356C12.3559 12.7356 11.0001 13.1611 9.86 13.9547C9.2343 14.416 8.4774 14.6649 7.7 14.6649C6.9226 14.6649 6.1657 14.416 5.54 13.9547C4.4144 13.1356 3.0518 12.7072 1.66 12.7347H0V15.9447H1.61C2.39051 15.924 3.154 16.175 3.77 16.6547C4.908 17.4489 6.2623 17.8747 7.65 17.8747C9.0377 17.8747 10.392 17.4489 11.53 16.6547C12.1468 16.1765 12.9097 15.9257 13.69 15.9447C14.4708 15.9223 15.2348 16.1735 15.85 16.6547C16.9901 17.4484 18.3459 17.8738 19.735 17.8738C21.1241 17.8738 22.4799 17.4484 23.62 16.6547ZM23.62 22.3947C24.236 21.915 24.9995 21.664 25.78 21.6847H27.39V18.4747H25.78C24.4052 18.4581 23.0619 18.886 21.95 19.6947C21.3243 20.156 20.5674 20.4049 19.79 20.4049C19.0126 20.4049 18.2557 20.156 17.63 19.6947C16.4899 18.9011 15.1341 18.4757 13.745 18.4757C12.3559 18.4757 11.0001 18.9011 9.86 19.6947C9.2343 20.156 8.4774 20.4049 7.7 20.4049C6.9226 20.4049 6.1657 20.156 5.54 19.6947C4.4144 18.8757 3.0518 18.4472 1.66 18.4747H0V21.6847H1.61C2.39051 21.664 3.154 21.915 3.77 22.3947C4.908 23.1889 6.2623 23.6147 7.65 23.6147C9.0377 23.6147 10.392 23.1889 11.53 22.3947C12.1468 21.9165 12.9097 21.6657 13.69 21.6847C14.4708 21.6623 15.2348 21.9135 15.85 22.3947C16.9901 23.1884 18.3459 23.6138 19.735 23.6138C21.1241 23.6138 22.4799 23.1884 23.62 22.3947Z"
-                                    fill="currentColor"
-                                />
-                            </svg>
-                        </a>
+        <header className="flex flex-wrap  md:justify-start md:flex-nowrap z-50 w-full bg-white border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
+            <nav className="relative  w-full mx-auto flex items-center justify-between gap-6 sm:gap-8 py-4 px-4 sm:px-6 lg:px-8">
+
+                <a className="flex-none font-semibold text-xl text-black focus:outline-none focus:opacity-80 dark:text-white" href="/" aria-label="Brand">Brand</a>
+
+                <div className="md:order-3 flex justify-end items-center gap-x-1">
+                    <button type="button" className="md:hidden relative p-2 flex items-center font-medium text-[12px] rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" id="hs-header-base-collapse" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-header-base" aria-label="Toggle navigation" data-hs-overlay="#hs-header-base"  >
+                        Menu
+                        <svg className="shrink-0 size-4 ms-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" /></svg>
+                    </button>
+
+                    <div className="hidden md:inline-block md:me-8">
+                        <div className="w-1 h-8 bg-gray-300 dark:bg-neutral-700"></div>
                     </div>
 
-                    <div className="md:flex md:items-center md:gap-12">
-                        <nav aria-label="Global" className="hidden md:block">
-                            <ul className="flex items-center gap-6 text-sm">
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        About
-                                    </a>
-                                </li>
+                    {session.email ? (
+                        <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
+                            <button id="hs-dropdown-account" type="button" className="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                                <img className="shrink-0 size-[38px] rounded-full" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Avatar" />
+                            </button>
 
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        Careers
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        History
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        Services
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        Projects
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        Blog
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-
-                        <div className="flex items-center gap-4">
-                            <div className="sm:flex sm:gap-4">
-                                <a
-                                    className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow dark:hover:bg-teal-500"
-                                    href="#"
-                                >
-                                    Login
-                                </a>
-
-                                <div className="hidden sm:flex">
-                                    <a
-                                        className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                                        href="#"
-                                    >
-                                        Register
-                                    </a>
+                            <div className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-[20rem] bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
+                                <div className="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
+                                    <p className="text-[1.2rem] text-gray-500 dark:text-neutral-500">Signed in as</p>
+                                    <p className="text-[1.2rem] font-medium text-gray-800 dark:text-neutral-200">{session.email}</p>
+                                </div>
+                                <div className="p-1.5 space-y-0.5">
+                                    <Links url={``} text='Bookings' cls={`font-normal`}>
+                                        <LogOut className='' />
+                                    </Links>
+                                    <Links url={``} text='Profile' cls={`font-normal`}>
+                                        <svg className="shrink-0 size-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                                    </Links>
+                                    <Links url={``} text='Notification' cls={`font-normal`}>
+                                        <svg className="shrink-0 size-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+                                    </Links>
+                                    <span onClick={logout} className='block' >
+                                        <Links url={``} text='Log out' cls={`font-normal`}>
+                                            <LogOut className='size-6' />
+                                        </Links>
+                                    </span>
                                 </div>
                             </div>
+                        </div>
+                    ) : <Links url={`/login`} text='Login' cls={`rounded-md bg-gray-100 px-8 py-3 text-[1.4rem] font-medium text-teal-600 transition hover:text-teal-600/75 sm:block`}>
+                    </Links>}
+                </div>
 
-                            <div className="block md:hidden">
-                                <button
-                                    className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="size-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
+                <div id="hs-header-base" className="hs-overlay [--auto-close:md] hs-overlay-open:translate-x-0 -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-[60] bg-white border-e basis-full grow md:order-2 md:static md:block md:h-auto md:max-w-none md:w-auto md:border-e-transparent md:transition-none md:translate-x-0 md:z-40 md:basis-auto dark:bg-neutral-800 dark:border-e-gray-700 md:dark:border-e-transparent hidden " role="dialog" aria-label="Sidebar" data-hs-overlay-close-on-resize  >
+                    <div className="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                        <div className="py-2 md:py-0 px-2 md:px-0 flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1">
+                            <div className="md:hidden p-2 flex justify-between items-center">
+                                <h3 id="hs-header-base-label" className="font-bold text-gray-800 dark:text-white">
+                                    Menu title
+                                </h3>
+                                <button type="button" className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600" aria-label="Close" data-hs-overlay="#hs-header-base">
+                                    <span className="sr-only">Close</span>
+                                    <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                                 </button>
+                            </div>
+                            <div className="grow">
+                                <div className="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
+
+                                    <Links url={`/rooms`} text='Rooms' cls={`${path.includes("rooms") && "underline  font-semibold"}  hover:bg-transparent hover:underline`}>
+                                    </Links>
+                                    <Links url={`/facility`} text='Facility' cls={`${path.includes("facility") && "underline  font-semibold"} hover:bg-transparent hover:underline`}>
+                                    </Links>
+                                    <Links url={`/contact`} text='Contact' cls={`${path.includes("contact") && "underline  font-semibold"} hover:bg-transparent hover:underline`}>
+                                    </Links>
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
         </header>
+    )
+}
+
+const Links = ({ text, url, cls, children }: { url: string, text: string, cls?: string, children?: React.ReactNode }) => {
+    return (
+        <Link
+            className={cn(
+                "flex items-center gap-x-3.5 py-3 px-4  text-[1.4rem] font-semibold text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-neutral-700 dark:text-white",
+                cls
+            )}
+            href={`${url}`}>
+            {children}
+            {text}
+        </Link>
     )
 }

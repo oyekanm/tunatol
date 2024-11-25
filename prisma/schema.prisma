@@ -143,7 +143,7 @@ model Facility {
 
 model Transaction {
   id            String            @id @default(cuid())
-  amount        Float
+  amount        Int
   // currency      String
   status        TransactionStatus @default(PENDING)
   type          TransactionType   @default(PAYMENT)

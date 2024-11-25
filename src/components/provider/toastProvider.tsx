@@ -31,6 +31,8 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     setToastQueue(filteredToast)
   }
 
+ 
+
 
   const toast = (props: ToastProps) => {
     const newToast = {

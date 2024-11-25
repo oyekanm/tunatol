@@ -28,7 +28,7 @@ export default async function RootLayout({
 }>) {
   const current = await useCurrentUser()
 
-  console.log(current)
+  // console.log(current)
 
   return (
     <html lang="en">

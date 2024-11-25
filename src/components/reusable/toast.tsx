@@ -12,6 +12,11 @@ type Props = {
 }
 
 export default function Toast({ status, text, click, clickText,close, clx }: Props) {
+    const clickFunction = ()=>{
+        click()
+        close()
+       }
+
     return (
         <div className="space-y-3">
             <div className={
@@ -27,7 +32,7 @@ export default function Toast({ status, text, click, clickText,close, clx }: Pro
                         </p>
                     </div>
                     <div className="ms-auto flex items-center space-x-3">
-                        {clickText && <button onClick={click} type="button" className="text-blue-600 decoration-2 hover:underline font-medium text-[1.2rem] focus:outline-none focus:underline dark:text-blue-500">
+                        {clickText && <button onClick={clickFunction} type="button" className="text-blue-600 decoration-2 hover:underline font-medium text-[1.2rem] focus:outline-none focus:underline dark:text-blue-500">
                             {clickText}
                         </button>}
                         <button onClick={close} type="button" className="inline-flex shrink-0 justify-center items-center size-5 rounded-lg text-gray-200 opacity-50 hover:opacity-100 focus:outline-none focus:opacity-100 dark:text-white" aria-label="Close">

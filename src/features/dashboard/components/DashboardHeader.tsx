@@ -8,7 +8,7 @@ export default function DashboardHeader() {
     const bd = path.split("/").filter(b => b !== "")
     return (
         <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 lg:ps-[260px] dark:bg-neutral-800 dark:border-neutral-700">
-            <nav className="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
+            <nav className="px-4 sm:px-6 flex justify-between basis-full items-center w-full mx-auto">
                 <div className="me-5 lg:me-0 lg:hidden">
                     {/* <!-- Logo --> */}
                     <a className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Preline">
@@ -22,9 +22,9 @@ export default function DashboardHeader() {
                     {/* <!-- End Logo --> */}
                 </div>
 
-                <div className="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
+                <div className="lg:w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
 
-                    <div className="hidden md:block">
+                    <div className="hidden lg:block">
                         <ul className="ms-3 flex items-center whitespace-nowrap">
                             {
                                 bd.map((b, i) => {

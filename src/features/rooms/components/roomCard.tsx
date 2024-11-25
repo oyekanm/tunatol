@@ -1,32 +1,42 @@
-import { Button } from '@/components/reusable'
+"use client"
+
+import { Button, ImageCarousel } from '@/components/reusable'
+import { Star, StarIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
-export default function RoomCard() {
+type Props = {
+    room: Room,
+    click?:any
+}
+
+export default function RoomCard({ room, click }: Props) {
+    const router = useRouter()
+    const { images, name, price, id } = room
+    const changeRoute = () =>{
+        router.push(`/rooms/${name.split(" ").join("-")}`)
+      }
     return (
-        <div>
-            <Image
-                src={"/assets/image/room.png"}
-                alt={"room"}
-                width={300}
-                height={300}
-                style={{ objectFit: "cover", height: "200px", width: "100%" }}
-            />
-            <div className='block uppercase bg-slate-700 text-white p-4 text-[1.8rem] '>
-                executive room
+        <div onClick={changeRoute} className='cursor-pointer'>
+            <div className='rounded-[10px] h-[200px] w-full overflow-hidden'>
+                <ImageCarousel files={images} duration={15000} moveBtn={false} />
             </div>
-            <div className='grid grid-cols-2 items-center py-8 border-[2px] border-t-0 '>
-                <span className='flex items-center justify-center'>
-                    <Link href={`/rooms/222`} className='text-[1.3rem] font-semibold uppercase underline' >
-                        view room details
-                    </Link>
-                </span>
-                <span className='flex items-center justify-center '>
-                    <span className='cursor-pointer text-[1.3rem] primary-bg font-semibold text-white p-6 py-4'>
-                        155 Avg/night
+            <div className=' pt-4 '>
+                <div className='flex justify-between items-center'>
+                    <p className='text-[1.4rem] font-semibold'>{name}</p>
+                    <span className='flex cursor-pointer items-center gap-2'>
+                        <StarIcon className='size-4' />
+                        <span className='text-[1.4rem] font-medium underline'>100</span>
                     </span>
-                </span>
+                </div>
+                <div>
+                    <p className='cursor-pointer text-[1.3rem] font-semibold'>
+                        {price}
+                        <span className='text-[1.3rem] font-normal'> night</span>
+                    </p>
+                </div>
             </div>
         </div>
     )

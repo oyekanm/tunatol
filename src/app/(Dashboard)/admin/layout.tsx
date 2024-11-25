@@ -1,10 +1,11 @@
-import "@/app/globals.css";
+import "./../../globals.css";
 import { DashboardHeader, DashboardMainContent, SideBar } from "@/features/dashboard/components";
 import PrelineScript from "@/lib/PrelineScript";
 import { BreadCrumbs } from "@/components";
 import { useCurrentUser } from "@/hooks";
 import { redirect } from "next/navigation";
 import { ToastProvider } from "@/components/provider";
+
 
 enum UserType {
   "ADMIN",

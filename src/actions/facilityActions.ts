@@ -6,11 +6,14 @@ import { deleteFirebaseFile } from "@/utils";
 import { validateRoomOwnership } from "@/utils/validations";
 
 // TODO: create aa useable auth check
+enum UserType{
+  "ADMIN",
+  "USER"
+}
 
-
-export async function CreateRoom(
-  room: Room
-): Promise<ActionResponse<Room>> {
+export async function CreateFacility(
+  facility: Facility
+): Promise<ActionResponse<Facility>> {
   const { userId, user_type } = await useCurrentUser();
   const user: any = "ADMIN"
   const {
@@ -152,7 +155,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
         discount_percent,
         available_announcement,
         images: {
-          updateMany: {
+          createMany: {
             data: images.map((image) => ({
               url: image.url,
               key: image.key,
@@ -177,7 +180,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
   }
 }
 
-export async function DeleteRoom(
+export async function DeleteResource(
   id: string
 ): Promise<ActionResponse<string>> {
   const { userId, user_type } = await useCurrentUser();

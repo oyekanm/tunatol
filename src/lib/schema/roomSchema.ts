@@ -46,3 +46,11 @@ export const Image = z.object({
   key: z.string(),
   url: z.string(),
 });
+
+export const reviewSchema = z.object({
+  id: z.string().optional(),
+  roomId: z.string(),
+  rating: z.number(),
+  comment: z.string(),
+  userId: z.string(),
+});

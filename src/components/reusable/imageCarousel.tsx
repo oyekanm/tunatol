@@ -2,6 +2,7 @@
 
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -11,11 +12,13 @@ import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from './button'
+import { useState } from "react"
 
 type Props = {
   files: Image[];
-  showTexts: boolean;
-  duration?:number
+  showTexts?: boolean;
+  duration?: number;
+  moveBtn?: boolean
 }
 
 const files = [
@@ -25,12 +28,15 @@ const files = [
 ]
 
 const arrowStyle = "h-[100%] px-10 bg-transparent rounded-none hover:bg-[rgba(0,0,0,.3)] border-none"
-const btnTextStyle ="h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
+const btnTextStyle = "h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
 
-export default function ImageCarousel({ showTexts,files, duration }: Props) {
+export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true }: Props) {
+  const [api, setApi] = useState<CarouselApi>()
+  console.log(api)
   return (
     <section className='relative h-full'>
       <Carousel
+      setApi={setApi}
         opts={{
           align: "start",
           loop: true,
@@ -47,7 +53,7 @@ export default function ImageCarousel({ showTexts,files, duration }: Props) {
             <CarouselItem key={file.key} className="relative md:basis-full ">
               <Image alt={file.url} src={file.url} width={300} height={300}
                 className="w-full h-full"
-
+                priority={false}
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-[rgba(0,0,0,.3)] to-[rgba(0,0,0,.5)] "
@@ -55,8 +61,13 @@ export default function ImageCarousel({ showTexts,files, duration }: Props) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className={`left-0 ${arrowStyle}`} />
-        <CarouselNext className={`right-0 ${arrowStyle}`} />
+        {moveBtn && (
+          <>
+            <CarouselPrevious className={`left-0 ${arrowStyle}`} />
+            <CarouselNext className={`right-0 ${arrowStyle}`} />
+          </>
+        )
+        }
       </Carousel>
       {showTexts && (
         <div className='centre w-[80%] grid gap-8 '>
@@ -65,6 +76,7 @@ export default function ImageCarousel({ showTexts,files, duration }: Props) {
             <p className='text-[2rem] md:text-[5rem] font-bold capitalize'>Home away from home</p>
             <p className='text-[1.6rem] sm:text-[1.8rem]  md:text-[2.5rem] font-medium uppercase'>Best price guaranteed</p>
           </div>
+
           <div className="grid grid-cols-2 md:w-[50%] mx-auto gap-2 md:gap-4 ">
             <Link href={"/rooms"}>
               <Button text='Make Reservations' clx={`${btnTextStyle}`} />
@@ -73,6 +85,7 @@ export default function ImageCarousel({ showTexts,files, duration }: Props) {
               <Button text='Get Started' clx={`${btnTextStyle}`} />
             </Link>
           </div>
+
         </div>
       )}
     </section>

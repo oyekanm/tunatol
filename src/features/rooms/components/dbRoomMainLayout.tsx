@@ -8,6 +8,9 @@ type Props = {
 }
 
 export default function DbRoomMainLayout({data}:Props) {
+    const deleteIds = (ids:any)=>{
+// console.log(ids)
+    }
     return (
         <div>
             <section>
@@ -20,6 +23,8 @@ export default function DbRoomMainLayout({data}:Props) {
                             path='/admin/rooms/edit'
                             pathText='Edit'
                             headerText='Products'
+                            check={true}
+                            deleteChecked={deleteIds}
                         />
                     )
                 }

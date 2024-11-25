@@ -20,7 +20,7 @@ enum OrderStatus {
 }
 type Review = {
   id?: string;
-  productId: string;
+  roomId: string;
   rating: number;
   comment: string;
   createdAt?: string;
@@ -64,6 +64,37 @@ type Booking = {
   endDate:Date;
   totalCost:number;
   roomId:string;
+}
+type Transaction = {
+    id?:string,
+    amount:number,
+    status:TransactionStatus,
+    type:TransactionType,
+    paymentMethod:string,
+    createdAt?: Date,
+    updatedAt?: Date,
+    bookingId?:string
+}
+type Facility = {
+    id?:tring,
+    name:tring,
+    imageId:string,
+    userId:string,
+    image:Image;
+    createdAt?: Date,
+    updatedAt?: Date,
+  
+}
+enum TransactionStatus {
+  "PENDING",
+  "SUCCESSFUL",
+  "FAILED",
+  "REFUNDED"
+}
+
+enum TransactionType {
+  "PAYMENT",
+  "REFUND"
 }
  enum UserType{
   "ADMIN",

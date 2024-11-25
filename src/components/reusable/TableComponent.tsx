@@ -1,17 +1,19 @@
 "use client"
+import { useToast } from '@/hooks';
 import Link from 'next/link';
 import React, { useState } from 'react'
 
 type Props = {
     column: column[];
-    data: any;
+    data: any[];
     href?: string;
     hrefText?: string;
     path?: string,
     pathText?: string;
     headerText?: string;
     check?: boolean;
-    children?:React.ReactNode
+    children?:React.ReactNode,
+    deleteChecked?:any
 }
 
 
@@ -19,7 +21,8 @@ type Props = {
 
 
 
-export default function TableComponent({ column, data, hrefText, path, href, pathText, headerText, check,children }: Props) {
+export default function TableComponent({ column, data, hrefText, path, href, pathText, headerText, check,children,deleteChecked }: Props) {
+    const toast = useToast()
     const [ids, setIds] = useState<string[]>([])
     const allIds = data.map((pr: any) => pr.id)
     const checked = (id: string) => {
@@ -40,11 +43,25 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
             return [...prev, id]
         })
     }
+    // console.log(data.length  , ids.length)
     const addAllIds = (id: string[]) => {
         // console.log(allChecked())
+        if(data.length  === ids.length){
+            setIds([])
+            return;
+        }
         setIds(id)
     }
-    console.log(ids)
+    const deleteRecord = ()=>{
+        toast({
+            status: 'warning',
+            text: 'Are you sure you want to delete?',
+            clickText:"YES",
+            click:()=>deleteChecked(ids),
+            duration:30000,
+        });
+        
+    }
 
     return (
         // <!-- Table Section -->
@@ -63,7 +80,7 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
                                 </div>
                                 <div>
                                     <div className="inline-flex items-center gap-x-4">
-                                        {ids.length > 0 && <button className="py-2 px-6 inline-flex items-center bg-destructive text-white gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200   shadow-sm hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none focus:outline-none dark:bg-destructive dark:border-neutral-700 dark:text-neutral-300">
+                                        {ids.length > 0 && <button onClick={deleteRecord} className="py-2 px-6 inline-flex items-center bg-destructive text-white gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200   shadow-sm hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none focus:outline-none dark:bg-destructive dark:border-neutral-700 dark:text-neutral-300">
                                             Delete ({ids.length})
                                         </button>}
                                         {/* <!-- Input --> */}
