@@ -131,7 +131,7 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
                                         data?.map((row: any) => {
                                             const name = row?.name?.split(" ").join("-");
                                             return (
-                                                <tr>
+                                                <tr key={row.id}>
                                                     {check && (
                                                         <td className="size-px whitespace-nowrap">
                                                             <div className="ps-6 py-3">
@@ -148,7 +148,7 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
                                                         // const name = column?.accessor
                                                         // console.log(row["CollectionType"][column.accessor])
                                                         return (
-                                                            <td className="h-px w-72 whitespace-nowrap">
+                                                            <td key={column.key} className="h-px w-72 whitespace-nowrap">
                                                                 <div className="px-4 py-3">
                                                                     {
                                                                         column.render ? column.render(row[column.key]) :

@@ -78,13 +78,13 @@ const useUploadToFirebase = () => {
         setUploading(true);
         setProgress(0);
         setError(null);
-        let newFiles = []
+        const newFiles = []
 
    
 
         try {
             for (let i = 0; i < files?.length; i++) {
-                let imageFile = files[i];
+                const imageFile = files[i];
 
                 const result = await uploadToFirebase(imageFile, rootFolder,onProgress);
                 newFiles.push(result)
