@@ -1,9 +1,14 @@
 "use client"
 
+import { PaystackPayment } from '@/components'
 import { Button } from '@/components/reusable'
 import React, { useState } from 'react'
 
-export default function ReservationCard() {
+type Props = {
+  price:number,
+}
+
+export default function ReservationCard({price}:Props) {
   const [guests, setGuests] = useState<Guest[]>([
     { count: 1, type: 'Adults' }
   ])
@@ -30,9 +35,10 @@ export default function ReservationCard() {
 
 
       <Button text='Reserve' clx='text-[1.8rem] py-8' />
+      <PaystackPayment />
       <ul>
         <li className='flex items-center justify-between'>
-          <span className='text-[1.4rem] font-medium underline'>$60 x 2 nights</span>
+          <span className='text-[1.4rem] font-medium underline'>${price} x  nights</span>
           <span className='text-[1.2rem] font-semibold'>$120</span>
         </li>
       </ul>

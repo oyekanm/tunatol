@@ -18,6 +18,7 @@ export default function PaystackPayment() {
         onClose: () => alert("Wait! You need this oil, don't go!!!!"),
       }
   return (
+
     <PaystackButton   className="paystack-button" {...componentProps} />
   )
 }

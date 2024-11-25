@@ -1,5 +1,6 @@
 import { RoomDescComp } from "@/components";
 import { ImageCarousel } from "@/components/reusable";
+import { useCurrentUser } from "@/hooks";
 
 const files:Image[] = [
   {
@@ -16,11 +17,12 @@ const files:Image[] = [
   },
 ]
 
-export default function Home() {
+export default async function Home() {
+  const session = await useCurrentUser()
   return (
     <div className="bg-gray-50">
       <div className='h-[80vh]'>
-          <ImageCarousel files={files} showTexts />
+          <ImageCarousel files={files} showTexts session={session} />
         </div>
       <section className="Container pt-[4rem]">
         <p className={`text-[2rem] sm:text-[2.5rem] md:text-[3.6rem] text-center`}>

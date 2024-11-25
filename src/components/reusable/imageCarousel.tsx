@@ -18,7 +18,8 @@ type Props = {
   files: Image[];
   showTexts?: boolean;
   duration?: number;
-  moveBtn?: boolean
+  moveBtn?: boolean;
+  session:Partial<User>
 }
 
 const files = [
@@ -30,7 +31,7 @@ const files = [
 const arrowStyle = "h-[100%] px-10 bg-transparent rounded-none hover:bg-[rgba(0,0,0,.3)] border-none"
 const btnTextStyle = "h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
 
-export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true }: Props) {
+export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true,session }: Props) {
   const [api, setApi] = useState<CarouselApi>()
   console.log(api)
   return (
@@ -77,13 +78,13 @@ export default function ImageCarousel({ showTexts = false, files, duration, move
             <p className='text-[1.6rem] sm:text-[1.8rem]  md:text-[2.5rem] font-medium uppercase'>Best price guaranteed</p>
           </div>
 
-          <div className="grid grid-cols-2 md:w-[50%] mx-auto gap-2 md:gap-4 ">
-            <Link href={"/rooms"}>
+          <div className="flex  items-center justify-center md:w-[50%] mx-auto gap-2 md:gap-4 ">
+            <Link href={"/rooms"} className="w-full">
               <Button text='Make Reservations' clx={`${btnTextStyle}`} />
             </Link>
-            <Link href={"/login"}>
+            {!session.email && <Link href={"/login"} className="w-full">
               <Button text='Get Started' clx={`${btnTextStyle}`} />
-            </Link>
+            </Link>}
           </div>
 
         </div>

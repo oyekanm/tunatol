@@ -27,7 +27,7 @@ export default function RoomCard({ room, click }: Props) {
                 <div className='flex justify-between items-center'>
                     <p className='text-[1.4rem] font-semibold'>{name}</p>
                     <span className='flex cursor-pointer items-center gap-2'>
-                        <StarIcon className='size-4' />
+                        <StarIcon className='size-6' />
                         <span className='text-[1.4rem] font-medium underline'>100</span>
                     </span>
                 </div>

@@ -9,7 +9,7 @@ function Facility() {
           FACILITIES
         </p>
         <p className={`text-[2rem] md:text-[2.5rem] text-center`}>
-          We want your stay at our lush hotel to be truly unforgettable. That is
+          We want your stay here to be truly unforgettable. That is
           why we give special attention to all of your needs so that we can
           ensure an experience quite unique.
         </p>
