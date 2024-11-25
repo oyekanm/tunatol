@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "@/app/globals.css";
 import { HomeLayout } from "@/layout";
 import { PrelineScript } from "@/lib";
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +26,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const current = await useCurrentUser()
+  const current = await CurrentUser()
 
   // console.log(current)
 

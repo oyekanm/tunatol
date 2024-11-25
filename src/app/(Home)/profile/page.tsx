@@ -1,10 +1,10 @@
 import { ProfileTabMenu } from '@/features/profile/components'
-import { useCurrentUser } from '@/hooks'
+import { CurrentUser } from '@/hooks'
 import Link from 'next/link'
 import React from 'react'
 
 export default async function page() {
-    const session = await useCurrentUser()
+    const session = await CurrentUser()
     if (!session.email) {
         return (
             <div className='flex gap-8 items-center flex-col justify-center w-full px-4  h-[50rem] mx-auto max-w-[50rem]'>

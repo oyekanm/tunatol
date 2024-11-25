@@ -1,6 +1,6 @@
 "use server";
 
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 import { prisma } from "@/lib";
 import { deleteFirebaseFile } from "@/utils";
 import { validateRoomOwnership } from "@/utils/validations";
@@ -10,7 +10,7 @@ import { validateRoomOwnership } from "@/utils/validations";
 export async function CreateBooking(
   booking: Booking,transaction:Transaction
 ): Promise<ActionResponse<Booking>> {
-  const { userId, user_type } = await useCurrentUser();
+  const { userId, user_type } = await CurrentUser();
   const user: any = "ADMIN";
   const { endDate, roomId, startDate, totalCost } = booking;
   const {paymentMethod} = transaction
@@ -56,7 +56,7 @@ export async function CreateBooking(
 // export async function CreateReFund(
 //   refund: Transaction
 // ): Promise<ActionResponse<Booking>> {
-//   const { userId, user_type } = await useCurrentUser();
+//   const { userId, user_type } = await CurrentUser();
 //   const user: any = "ADMIN";
 //   const { amount,paymentMethod,status,type,bookingId } = refund;
 

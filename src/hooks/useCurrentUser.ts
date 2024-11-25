@@ -12,7 +12,7 @@ import { cache } from "react";
 //     }
 // }
 
-export const useCurrentUser = cache(async () => {
+export const CurrentUser = cache(async () => {
     const session:{ user:User,expires: any} | null = await getServerSession(authOptions);
     return {
       name: session?.user?.name as string,

@@ -1,6 +1,6 @@
 "use server";
 
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 import { prisma } from "@/lib";
 import { hash } from "bcryptjs";
 import { sign } from 'jsonwebtoken';
@@ -49,7 +49,7 @@ export async function RegisterUser(user: {
 }
 
 export async function GetStorageToke() {
-  const {userId,user_type} = await useCurrentUser()
+  const {userId,user_type} = await CurrentUser()
   const user: any = UserType.ADMIN
 
   if (!userId) {

@@ -2,7 +2,7 @@ import "./../../globals.css";
 import { DashboardHeader, DashboardMainContent, SideBar } from "@/features/dashboard/components";
 import PrelineScript from "@/lib/PrelineScript";
 import { BreadCrumbs } from "@/components";
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 import { redirect } from "next/navigation";
 import { ToastProvider } from "@/components/provider";
 
@@ -17,7 +17,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { email, user_type } = await useCurrentUser()
+  const { email, user_type } = await CurrentUser()
   const user: any = UserType.ADMIN
 
   // console.log(UserType.ADMIN)

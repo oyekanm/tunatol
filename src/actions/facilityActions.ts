@@ -1,6 +1,6 @@
 "use server";
 
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 import { prisma } from "@/lib";
 import { deleteFirebaseFile } from "@/utils";
 import { validateRoomOwnership } from "@/utils/validations";
@@ -14,7 +14,7 @@ enum UserType{
 export async function CreateFacility(
   facility: Facility
 ): Promise<ActionResponse<Facility>> {
-  const { userId, user_type } = await useCurrentUser();
+  const { userId, user_type } = await CurrentUser();
   const user: any = "ADMIN"
   const {
     description,
@@ -95,7 +95,7 @@ export async function CreateFacility(
   }
 }
 export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<Room>> {
-  const { userId, user_type } = await useCurrentUser();
+  const { userId, user_type } = await CurrentUser();
   const user: any = "ADMIN"
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const {
@@ -183,7 +183,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
 export async function DeleteResource(
   id: string
 ): Promise<ActionResponse<string>> {
-  const { userId, user_type } = await useCurrentUser();
+  const { userId, user_type } = await CurrentUser();
   const user: any = "ADMIN"
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const images = await prisma.image.findMany({

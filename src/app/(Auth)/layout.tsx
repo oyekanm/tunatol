@@ -1,7 +1,7 @@
 import "@/app/globals.css";
 import { ToastProvider } from "@/components/provider";
 import { Toast } from "@/components/reusable";
-import { useCurrentUser } from "@/hooks";
+import { CurrentUser } from "@/hooks";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -15,7 +15,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const current = await useCurrentUser()
+  const current = await CurrentUser()
 
   if (current.email) {
     redirect("/");
