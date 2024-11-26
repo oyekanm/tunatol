@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
 

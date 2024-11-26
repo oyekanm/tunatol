@@ -117,16 +117,6 @@ model Image {
 
 // New model for room features
 
-// model Feature {
-//   id        String   @id @default(cuid())
-//   name      String // e.g., "WiFi", "TV", "Air Conditioning"
-//   icon      String? // Icon name or URL
-//   rooms     Room[] // Many-to-many relation with rooms
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   @@unique([name]) // Ensure feature names are unique
-// }
 
 model Facility {
   id        String   @id @default(cuid())
@@ -140,6 +130,16 @@ model Facility {
 
   @@unique([name]) // Ensure feature names are unique
 }
+// model Feature {
+//   id        String   @id @default(cuid())
+//   name      String // e.g., "WiFi", "TV", "Air Conditioning"
+//   icon      String? // Icon name or URL
+//   rooms     Room[] // Many-to-many relation with rooms
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([name]) // Ensure feature names are unique
+// }
 
 model Transaction {
   id            String            @id @default(cuid())

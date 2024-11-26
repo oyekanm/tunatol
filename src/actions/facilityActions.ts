@@ -6,31 +6,22 @@ import { deleteFirebaseFile } from "@/utils";
 import { validateRoomOwnership } from "@/utils/validations";
 
 // TODO: create aa useable auth check
-enum UserType{
+enum UserType {
   "ADMIN",
-  "USER"
+  "USER",
 }
 
 export async function CreateFacility(
   facility: Facility
 ): Promise<ActionResponse<Facility>> {
   const { userId, user_type } = await CurrentUser();
-  const user: any = "ADMIN"
-  const {
-    description,
-    features,
-    images,
-    name,
-    price,
-    available_announcement,
-    discount_percent,
-    isAvailable,
-  } = room
+  const user: any = "ADMIN";
+  const { image, name } = facility;
 
-  console.log(user,user_type)
+  // console.log(user, user_type);
   try {
     // check db for incoming product details
-    const unique = await prisma.room.findFirst({
+    const unique = await prisma.facility.findFirst({
       where: {
         name: name,
       },
@@ -47,7 +38,7 @@ export async function CreateFacility(
     if (!userId) {
       return {
         success: false,
-        error: " Unauthorized to create a room",
+        error: " Unauthorized to create a facility",
       };
     }
 
@@ -55,37 +46,25 @@ export async function CreateFacility(
     if (user_type !== user) {
       return {
         success: false,
-        error: "Only admins can create rooms",
+        error: "Only admins can create facility",
       };
     }
 
     // create products
-    const newRoom = await prisma.room.create({
+    const newFacility = await prisma.facility.create({
       data: {
         name,
-        description,
-        price,
         userId,
-        isAvailable,
-        features,
-        discount_percent,
-        available_announcement,
-        images: {
-          createMany: {
-            data: images.map((image) => ({
-              url: image.url,
-              key: image.key,
-              userId,
-            })),
-          },
-        },
-      },
-      include: {
-        images: true,
-        Reviews:true
+        image:{
+          create:{
+            url: image.url,    // Required
+            key: image.key,    // Required
+            userId,
+          }
+        } 
       },
     });
-    return { success: true, data: newRoom as Room };
+    return { success: true, data: newFacility as Facility };
   } catch (error) {
     console.log(error);
     return {
@@ -94,9 +73,12 @@ export async function CreateFacility(
     };
   }
 }
-export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<Room>> {
+export async function UpdateRoom(
+  room: Room,
+  id: string
+): Promise<ActionResponse<Room>> {
   const { userId, user_type } = await CurrentUser();
-  const user: any = "ADMIN"
+  const user: any = "ADMIN";
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const {
     description,
@@ -107,7 +89,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
     available_announcement,
     discount_percent,
     isAvailable,
-  } = room
+  } = room;
 
   try {
     // check the user coming in first
@@ -166,7 +148,7 @@ export async function UpdateRoom(room: Room, id: string):Promise<ActionResponse<
       },
       include: {
         images: true,
-        Reviews:true
+        Reviews: true,
       },
     });
     return { success: true, data: updatedRoom as Room };
@@ -184,7 +166,7 @@ export async function DeleteResource(
   id: string
 ): Promise<ActionResponse<string>> {
   const { userId, user_type } = await CurrentUser();
-  const user: any = "ADMIN"
+  const user: any = "ADMIN";
   const { exist, userCreateRoom } = await validateRoomOwnership(userId, id);
   const images = await prisma.image.findMany({
     where: { roomId: id },
