@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormSubmitButton } from "@/components/form";
+import Link from "next/link";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -71,7 +72,7 @@ export default function AuthLoginForm() {
   };
 
   const labelClass = "font-semibold text-[1.4rem] text-slate-700 block mb-2 dark:text-white"
-  const inputClass = "!py-6 rounded-[5px] text-gray-700 !p-4 text-[1.4rem] focus-visible:!outline-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500"
+  const inputClass = "!py-6 rounded-[5px] text-gray-700 !p-4 !py-8 text-[1.4rem] focus-visible:!outline-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500"
 
 
   return (
@@ -80,7 +81,7 @@ export default function AuthLoginForm() {
     >
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col  gap-y-2"
+        className="flex flex-col  gap-y-4"
       >
         <FormField
           control={form.control}
@@ -118,6 +119,9 @@ export default function AuthLoginForm() {
             </FormItem>
           )}
         />
+        <div className="text-right" >
+          <Link href={"/register"} className="text-[1.2rem] underline">click here to register</Link>
+        </div>
         <FormSubmitButton
           // loading={false}
           className='w-full'
