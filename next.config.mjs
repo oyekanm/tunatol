@@ -16,7 +16,23 @@ const nextConfig = {
   },
   eslint:{
       ignoreDuringBuilds: true,
-  }
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Don't bundle server-only modules on client-side
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        http2: false,
+        dns: false,
+        tls: false,
+        'firebase-admin': false,
+        'gcp-metadata': false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
