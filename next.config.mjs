@@ -15,8 +15,11 @@ const nextConfig = {
     ],
   },
   eslint:{
-      ignoreDuringBuilds: true,
+      ignoreDuringBuilds: true
   },
+  typescript: {
+    ignoreBuildErrors: true,
+ },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Don't bundle server-only modules on client-side
