@@ -9,12 +9,13 @@ type Props = {
     text: string;
     time: string;
     rating: number,
-    flip?:boolean
+    flip?:boolean,
+    noBg?:boolean
 }
 
-export default function ReviewCard({ img, name, rating, text, time,flip=true }: Props) {
+export default function ReviewCard({ img, name, rating, text, time,flip=true,noBg }: Props) {
     return (
-        <div className='bg-white flex flex-col rounded-[5px] w-full sm:w-[30rem] min-w-[30rem] shadow-[0px_0px_20px_rgba(0,0,0,.2)] p-4'>
+        <div className={`${noBg?"bg-transparent":"bg-white"}  flex flex-col rounded-[5px] ${noBg && "!w-full"} w-full sm:w-[30rem] min-w-[30rem] ${!noBg && "shadow-[0px_0px_20px_rgba(0,0,0,.2)]"}  p-4`}>
             <span className={`flex gap-4 items-center ${flip&& "order-3"}`}>
                 <span className='rounded-[100px] w-[30px] h-[30px] overflow-hidden'>
                     <img src="https://cdn.skims.com/images/hfqi0zm0/production/a9e758d3d4dfad734f35471cecc7d85f30d62f6c-706x894.jpg?q=95&auto=format"

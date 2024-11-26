@@ -13,7 +13,7 @@ export default function ReservationCard({price}:Props) {
     { count: 1, type: 'Adults' }
   ])
   return (
-    <div className="text-start  flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800">
+    <div className="text-start w-full fixed bottom-0 z-[999] left-0 right-0 rounded-tr-[20px] rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800">
       <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200"><NairaSign/> {price} <span className='font-normal text-[1.6rem]'>night</span></p>
 
       <div className='border-[2px] rounded-[8px] cursor-pointer'>

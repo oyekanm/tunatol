@@ -1,16 +1,19 @@
 "use client"
 
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib';
+import { ClassValue } from 'clsx';
 import React, { useState } from 'react';
 
 type Props = {
     children?: React.ReactNode;
     trigger: string;
     btnExtra?: string;
-    extraClick?: any
+    extraClick?: any,
+    triggerclx?:ClassValue
 }
 
-export default function Modal({ children, btnExtra, trigger, extraClick }: Props) {
+export default function Modal({ children, btnExtra, trigger, extraClick,triggerclx }: Props) {
     const [open, setOpen] = useState(false)
     const toggleOpen = () => {
         setOpen(!open)
@@ -19,12 +22,12 @@ export default function Modal({ children, btnExtra, trigger, extraClick }: Props
         <>
             <Button type="button"
                 onClick={toggleOpen}
-                className="!py-8 px-16 inline-flex items-center gap-x-2 text-[1.4rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                className={cn("!py-8 px-16 inline-flex items-center gap-x-2 text-[1.4rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800",triggerclx)}
             >
                 {trigger}
             </Button>
             {open && (
-                <div className="bg-[rgba(0,0,0,.5)] inset-0 size-full fixed top-0 left-0 start-0 z-[80] overflow-x-hidden overflow-y-auto">
+                <div className="bg-[rgba(0,0,0,.5)] inset-0 size-full fixed top-0 left-0 start-0 z-[10000] overflow-x-hidden overflow-y-auto">
                     <div className="mt-0 ease-out transition-all sm:max-w-[60rem] sm:w-full m-3 sm:mx-auto">
                         <div className="relative flex flex-col bg-white shadow-lg rounded-xl dark:bg-neutral-900">
                             <div className="absolute top-2 end-2">

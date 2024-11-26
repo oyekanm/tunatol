@@ -21,7 +21,7 @@ export default async function Home() {
   const session = await CurrentUser()
   return (
     <div className="bg-gray-50">
-      <div className='h-[80vh]'>
+      <div className='h-[45rem] sm:h-[80vh]'>
           <ImageCarousel files={files} showTexts session={session} />
         </div>
       <section className="Container pt-[4rem]">

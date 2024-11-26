@@ -9,7 +9,7 @@ export default function SingleRoomContentLayout({ room }: Props) {
     if (!room) return;
     const {  price } = room
     return (
-        <section className='Container grid my-12 sm:grid-cols-[55%,40%] md:grid-cols-[65%,30%] gap-8 items-start'>
+        <section className='Container grid my-12  md:grid-cols-[65%,30%] gap-8 items-start'>
             <BookingCalenderCheckout room={room} />
             <div className='h-full'>
                 <ReservationCard price={price} />

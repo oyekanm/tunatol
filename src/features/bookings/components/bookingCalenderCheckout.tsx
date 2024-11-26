@@ -11,10 +11,11 @@ type Props = {
 export default function BookingCalenderCheckout({ room }: Props) {
     const { description, features, isAvailable, name, price, available_announcement, discount_percent } = room
     return (
-        <div className='grid gap-8'>
+        <div className='grid gap-8 mt-8'>
             <div className='grid gap-4'>
                 <p className='text-[1.8rem] font-semibold'>{name}</p>
                 <div className='p-4 '>
+                    <p className='hidden md:block text-[2rem] font-semibold'>About this space</p>
                     <RichTextRenderer content={description} />
                 </div>
             </div>

@@ -25,7 +25,7 @@ export default async function RootLayout({
       <body>
         <ToastProvider>
           <main className="relative bg-gray-400 h-screen grid items-center">
-            <section>
+            <section className="Container">
               <div className="w-full mx-auto grid gap-4 bg-white max-w-[50rem] shadow-[0_0_15px_5px_rgba(0,0,0,.8)] p-4 px-8 rounded-[10px]">
                 <Image className="w-[200px] h-[80px] mx-auto block" src={"/assets/image/tunatol.jpg"} alt="Tunatol eden logo" width={200} height={200} />
                 {children}

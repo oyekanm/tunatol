@@ -111,3 +111,16 @@ html{
   margin-top: 0;
   margin-bottom: 0;
 }
+.prose :where(ul):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+ 
+  padding-left: 2rem;
+}
+.rdrDayNumber{
+  @apply text-[1.6rem]
+}
+.rdrDayNumber{
+  @apply w-full
+}
+.rounded-full{
+  border-radius: 9999px;
+}

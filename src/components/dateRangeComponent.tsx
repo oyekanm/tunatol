@@ -9,9 +9,9 @@ import { Button } from './reusable';
 export default function DateRangeComponent() {
     const [dateRange, setDateRange] = useState<any>([
         {
-            startDate: "",
-            endDate: "",
-            key: 'selection'
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
         }
     ]);
     const changeDate = (item: any) => {
@@ -23,9 +23,9 @@ export default function DateRangeComponent() {
     const reset =()=>{
         setDateRange([
             {
-                startDate: "",
-                endDate: "",
-                key: 'selection'
+                startDate: new Date(),
+                endDate: new Date(),
+                key: 'selection',
             }
         ])
     }
@@ -52,6 +52,9 @@ export default function DateRangeComponent() {
                     direction={'horizontal'}
                     startDatePlaceholder='Check-in'
                     endDatePlaceholder='Check-out'
+                    className='w-full'
+                    minDate={new Date()}
+                    classNames={{dayActive:"text-[1.4rem]"}}
                 />
             </div>
             <div className='text-right'>

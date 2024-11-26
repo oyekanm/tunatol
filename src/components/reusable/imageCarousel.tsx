@@ -78,7 +78,7 @@ export default function ImageCarousel({ showTexts = false, files, duration, move
             <p className='text-[1.6rem] sm:text-[1.8rem]  md:text-[2.5rem] font-medium uppercase'>Best price guaranteed</p>
           </div>
 
-          <div className="flex  items-center justify-center md:w-[50%] mx-auto gap-2 md:gap-4 ">
+          <div className="flex flex-col sm:flex-row w-[80%]  items-center justify-center md:w-[50%] mx-auto gap-2 md:gap-4 ">
             <Link href={"/rooms"} className="w-full">
               <Button text='Make Reservations' clx={`${btnTextStyle}`} />
             </Link>
