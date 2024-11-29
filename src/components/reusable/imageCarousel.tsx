@@ -33,7 +33,7 @@ const btnTextStyle = "h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-no
 
 export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true,session }: Props) {
   const [api, setApi] = useState<CarouselApi>()
-  console.log(api)
+  // console.log(api)
   return (
     <section className='relative h-full'>
       <Carousel

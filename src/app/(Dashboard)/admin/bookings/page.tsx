@@ -4,6 +4,7 @@
 import { Loader2 } from 'lucide-react';
 import { OrderColumn } from "./OrderColumn"
 import { TableComponent } from '@/components/reusable';
+import { prisma } from '@/lib';
 
 
 const data = [
@@ -71,6 +72,35 @@ const data = [
     payment_method: "Alipay"
   }
 ];
+
+// const ITEMS_PER_PAGE = 10;
+
+// async function getPosts(page: number) {
+//   const skip = (page - 1) * ITEMS_PER_PAGE;
+
+//   const [posts, total] = await Promise.all([
+//     prisma.booking.findMany({
+//       take: ITEMS_PER_PAGE,
+//       skip,
+//       orderBy: { createdAt: 'desc' }
+//     }),
+//     prisma.booking.count()
+//   ]);
+
+//   return {
+//     posts,
+//     totalPages: Math.ceil(total / ITEMS_PER_PAGE),
+//     currentPage: page
+//   };
+// }
+
+// export default async function PostsPage({ 
+//   searchParams 
+// }: { 
+//   searchParams: { page?: string } 
+// }) {
+//   const page = Number(searchParams.page) || 1;
+//   const { posts, totalPages, currentPage } = await getPosts(page);
 
 export default function page() {
   // const { data, error, isLoading } = FetchData({url:'/api/products'}) 

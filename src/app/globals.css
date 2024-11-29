@@ -124,3 +124,35 @@ html{
 .rounded-full{
   border-radius: 9999px;
 }
+.rdrMonth{
+  width: 100% !important;
+}
+@media screen and (max-width:350px){
+  .rangewidth{
+    width:100%;
+    max-width: 250px;
+  }
+
+}
+@media screen and (max-width:250px){
+  .rangewidth{
+    width:100%;
+    max-width: 200px;
+  }
+  .rdrMonthAndYearWrapper{
+    display: grid !important;
+    gap: 4;
+  }
+
+}
+@media screen and (max-width:180px){
+  .rangewidth{
+    width:100%;
+    max-width: 150px;
+  }
+  .rdrMonthAndYearWrapper{
+    display: grid !important;
+    gap: 4;
+  }
+
+}

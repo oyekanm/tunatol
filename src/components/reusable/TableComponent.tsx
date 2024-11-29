@@ -16,7 +16,43 @@ type Props = {
     deleteChecked?:any
 }
 
-
+// export default function PostList({ 
+//     posts, 
+//     totalPages, 
+//     currentPage 
+//   }: PostListProps) {
+//     const router = useRouter();
+//     const { setCurrentPage } = usePageContext();
+  
+//     const handlePageChange = (newPage: number) => {
+//       setCurrentPage(newPage);
+//       router.push(`/posts?page=${newPage}`);
+//     };
+  
+//     return (
+//       <div>
+//         {posts.map((post) => (
+//           <div key={post.id}>{post.title}</div>
+//         ))}
+  
+//         <div className="flex justify-center space-x-2 mt-4">
+//           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+//             <button
+//               key={page}
+//               onClick={() => handlePageChange(page)}
+//               className={`px-4 py-2 ${
+//                 page === currentPage 
+//                   ? 'bg-blue-500 text-white' 
+//                   : 'bg-gray-200'
+//               }`}
+//             >
+//               {page}
+//             </button>
+//           ))}
+//         </div>
+//       </div>
+//     );
+//   }
 
 
 

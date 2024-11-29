@@ -37,9 +37,7 @@ export default function BookingCalenderCheckout({ room }: Props) {
                 </div>
             </div>
 
-            <div>
-                <DateRangeComponent />
-            </div>
+            <DateRangeComponent />
 
         </div>
     )

@@ -5,22 +5,23 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { Button } from './reusable';
+import { useStoreContext } from './provider/storeProvider';
 
 export default function DateRangeComponent() {
-    const [dateRange, setDateRange] = useState<any>([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection',
-        }
-    ]);
-    const changeDate = (item: any) => {
-        // setDateRange
-        setDateRange([item.selection])
-        // console.log(item)
 
-    }
+    const { changeFormValue,changeDate,dateRange,setDateRange } = useStoreContext()
+  
     const reset =()=>{
+        const events = [
+            {
+                name:"startDate",
+                value:"",
+            },
+            {
+                name:"endDate",
+                value:"",
+            },
+        ]
         setDateRange([
             {
                 startDate: new Date(),
@@ -28,10 +29,13 @@ export default function DateRangeComponent() {
                 key: 'selection',
             }
         ])
+        for(let i=0; i < events.length; i++){
+            changeFormValue(events[i])
+        }
     }
 
     return (
-        <div>
+        <div className='rangewidth'>
             <div className='hidden md:block'>
                 <DateRange
                     ranges={dateRange}
