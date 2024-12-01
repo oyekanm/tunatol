@@ -3,88 +3,110 @@
 
 import { bookingSchema } from '@/lib/schema/roomSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { differenceInDays } from 'date-fns';
 import React, { createContext, useState, useContext, Dispatch, SetStateAction, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 type FormValues = {
-    roomId: string;
-    UserId: string;
-    totalCost: number;
-    startDate: Date;
-    endDate: Date;
-    id?: string | undefined;
+  roomId: string;
+  UserId: string;
+  totalCost: number;
+  startDate: Date;
+  endDate: Date;
+  id?: string | undefined;
 }
 
 type StoreContextType = {
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
-  showNav:boolean; 
-  setShowNav:React.Dispatch<React.SetStateAction<boolean>>,
-  dateRange:any; 
-  setDateRange:React.Dispatch<React.SetStateAction<any>>,
+  showNav: boolean;
+  setShowNav: React.Dispatch<React.SetStateAction<boolean>>,
+  dateRange: any;
+  setDateRange: React.Dispatch<React.SetStateAction<any>>,
   changeFormValue: (e: any) => void,
   values?: FormValues,
-  changeDate: (item: any) => void
+  changeDate: (item: any) => void,
+  setHeight: React.Dispatch<React.SetStateAction<number>>,
+  height: number,
+  days: number,
+  createBooking: () => Promise<void>
 };
 
 const StoreContext = createContext<StoreContextType>({
   currentPage: 1,
-  setCurrentPage: () => {},
-  showNav:false,
-  setShowNav: () => {},
-  changeFormValue: () => {},
+  setCurrentPage: () => { },
+  showNav: false,
+  setShowNav: () => { },
+  changeFormValue: () => { },
   values: undefined,
-  dateRange:"",
-  setDateRange:()=>{},
-  changeDate:()=>{},
-
+  dateRange: "",
+  setDateRange: () => { },
+  changeDate: () => { },
+  days: 0,
+  setHeight: () => { },
+  height: 0,
+  createBooking: async () => { }
 });
 
-export default function StoreProvider  ({ children }:{children: React.ReactNode})  {
+export default function StoreProvider({ children }: { children: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [showNav, setShowNav] = useState(false)
+  const [height, setHeight] = useState<number>(0);
   const [dateRange, setDateRange] = useState<any>([
     {
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection',
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection',
     }
   ]);
   const form = useForm<z.infer<typeof bookingSchema>>({
     resolver: zodResolver(bookingSchema),
-})
+    // defaultValues: {
+    //   UserId: "jdsdjsdjsh"
+    // }
+  })
+  // BFCMTLD24
+  //  NEWCOM649
+  const days = differenceInDays(
+    dateRange[0].endDate,
+    dateRange[0].startDate
+  )
 
-
-const changeDate = (item: any) => {
-  const events = [
+  const changeDate = (item: any) => {
+    const events = [
       {
-          name:"startDate",
-          value:item.selection.startDate,
+        name: "startDate",
+        value: item.selection.startDate,
       },
       {
-          name:"endDate",
-          value:item.selection.endDate,
+        name: "endDate",
+        value: item.selection.endDate,
       },
-  ]
+    ]
 
-  for(let i=0; i < events.length; i++){
+    for (let i = 0; i < events.length; i++) {
       changeFormValue(events[i])
+    }
+
+    setDateRange([item.selection])
+    // console.log(item,events)
+
   }
 
-  setDateRange([item.selection])
-  // console.log(item,events)
+  const changeFormValue = (e: any) => {
+    // console.log(e)
+    form.setValue(e.name, e.value)
+    console.log(form.getValues())
+  }
 
-}
-
-const changeFormValue = (e:any) =>{
-  // console.log(e)
-  form.setValue(e.name,e.value)
-  // console.log(form.getValues())
-}
-
+  const createBooking = async () => {
+    // form.handleSubmit()
+    const results = bookingSchema.safeParse(form.getValues())
+    console.log(results)
+  }
   return (
-    <StoreContext.Provider value={{ currentPage, setCurrentPage, showNav, setShowNav,changeFormValue,dateRange, setDateRange,changeDate }}>
+    <StoreContext.Provider value={{ currentPage, setCurrentPage, showNav, setShowNav, changeFormValue, dateRange, setDateRange, changeDate, days, height, setHeight, createBooking }}>
       {children}
     </StoreContext.Provider>
   );

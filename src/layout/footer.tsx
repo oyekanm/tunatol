@@ -1,8 +1,12 @@
+"use client"
+
+import { useStoreContext } from '@/components/provider/storeProvider'
 import React from 'react'
 
 export default function Footer() {
+    const {height } = useStoreContext()
     return (
-        <footer className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+        <footer style={{marginBottom:`${height}px`}} className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-5">
                 <div>
                     <a className="flex-none text-xl font-semibold text-black focus:outline-none dark:text-white" href="#" aria-label="Brand">Brand</a>

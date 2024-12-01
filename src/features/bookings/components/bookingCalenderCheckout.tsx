@@ -1,7 +1,10 @@
+"use client"
+
 import { DateRangeComponent, RichTextRenderer } from '@/components'
 import React from 'react'
 import ReservationCard from './reservationCard'
 import { Dot } from 'lucide-react'
+import { useStoreContext } from '@/components/provider/storeProvider'
 
 type Props = {
     room: Room
@@ -9,6 +12,7 @@ type Props = {
 // &#8358;
 
 export default function BookingCalenderCheckout({ room }: Props) {
+    const { days } = useStoreContext()
     const { description, features, isAvailable, name, price, available_announcement, discount_percent } = room
     return (
         <div className='grid gap-8 mt-8'>
@@ -36,7 +40,9 @@ export default function BookingCalenderCheckout({ room }: Props) {
                     </ul>
                 </div>
             </div>
-
+            {days > 0 && <div>
+                <p className='text-[2rem] font-semibold ' >{days} nights in {name}</p>
+            </div>}
             <DateRangeComponent />
 
         </div>

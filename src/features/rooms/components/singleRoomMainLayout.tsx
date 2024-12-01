@@ -38,10 +38,6 @@ export default function SingleRoomMainLayout({ room,session }: Props) {
             name:"roomId",
             value:room.id
         },
-        {
-            name:"totalCost",
-            value:finalPrice 
-        }
     ]
 
 
