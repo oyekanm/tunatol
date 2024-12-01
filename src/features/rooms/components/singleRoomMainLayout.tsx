@@ -51,14 +51,14 @@ export default function SingleRoomMainLayout({ room,session }: Props) {
 
     return (
         <div>
-            <div className='flex md:hidden items-center justify-between p-4 absolute top-4 z-[2000] w-full  '>
+            <div className='Container flex  items-center justify-between p-4 absolute md:relative top-4 z-[2000] w-full  '>
                 <Button type="button"
                     onClick={goBack}
-                    className="size-12 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-white text-gray-800 hover:bg-white focus:outline-none focus:bg-white disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
+                    className="size-12 md:hidden inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-white text-gray-800 hover:bg-white focus:outline-none focus:bg-white disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:text-neutral-400 dark:focus:bg-neutral-600"
                 >
                     <ChevronLeft className='!size-8' />
                 </Button>
-              
+                <p className='hidden md:block text-[2.5rem] font-semibold'>{room.name}</p>
                 <ShareButton
                     title="Check this out!"
                     text="Interesting content"

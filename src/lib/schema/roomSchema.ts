@@ -24,7 +24,7 @@ export const roomSchema = z.object({
 export const bookingSchema = z.object({
   id: z.string().optional(),
   roomId: z.string().min(2),
-  UserId: z.string().min(2),
+  userId: z.string().min(2),
   totalCost: z.coerce
     .number()
     .gte(1, { message: "Price value must be atleast 1 character" }),

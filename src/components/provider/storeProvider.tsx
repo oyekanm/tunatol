@@ -34,7 +34,7 @@ type StoreContextType = {
   days: number,
   createBooking: () => Promise<{
     bookingId: string;
-} | undefined>
+  } | undefined>
 };
 
 const StoreContext = createContext<StoreContextType>(null as any);
@@ -91,33 +91,41 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     console.log(form.getValues())
   }
 
+  console.log(form.formState.errors)
+
   const createBooking = async () => {
     // form.handleSubmit()
     const results = bookingSchema.safeParse(form.getValues())
-    if(results.success){
+    console.log(form.formState.errors)
+    if (results.success) {
       const response = await CreateBooking(results.data)
-          // error handling
-          if (response.success === false) {
-            console.log(response?.error)
-            toast({
-                status: 'error',
-                text: response?.error,
-            });
-            return;
-        }
-        // data successfully recieved
-        if (response.success) {
-            toast({
-                status: 'normal',
-                text: 'make payment to complete your reservation',
-            });
-            form.reset()
-            return {bookingId:response.data?.id as string}
-        }
-    }else{
+      // error handling
+      if (response.success === false) {
+        console.log(response?.error)
+        toast({
+          status: 'error',
+          text: response?.error,
+        });
+        return;
+      }
+      // data successfully recieved
+      if (response.success) {
+        toast({
+          status: 'normal',
+          text: 'make payment to complete your reservation',
+        });
+        form.reset()
+        return { bookingId: response.data?.id as string }
+      }
+    } else {
       console.log(results.error)
     }
   }
+
+  // const createBooking = () => {
+  //   const hh = form.handleSubmit(createBookings)
+  //   // hh.
+  // }
   return (
     <StoreContext.Provider value={{ currentPage, setCurrentPage, showNav, setShowNav, changeFormValue, dateRange, setDateRange, changeDate, days, height, setHeight, createBooking }}>
       {children}

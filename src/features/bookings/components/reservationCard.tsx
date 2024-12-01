@@ -42,12 +42,8 @@ export default function ReservationCard({ price, discount }: Props) {
     changeFormValue(events)
     return totals
   }, [finalPrice, startDate, endDate])
-
-
-  console.log(days, height)
-
   return (
-    <div ref={cardRef} className={`${!expand && "!p-4 !gap-2 md:!gap-6 md:!p-8"} text-start w-full fixed bottom-0 z-[999] left-0 right-0 rounded-tr-[20px] rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800`}>
+    <div ref={cardRef} className={`${!expand && "!p-4 !gap-2 md:!gap-6 md:!p-8"} text-start w-full fixed bottom-0 z-[999] left-0 rounded-lg right-0 md:rounded-tr-[20px] md:rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800`}>
       <div className='flex items-center justify-between'>
         <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200">
           <NairaSign />{finalPrice}

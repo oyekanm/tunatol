@@ -26,9 +26,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const current = await CurrentUser()
 
-  // console.log(current)
 
   return (
     <html lang="en">

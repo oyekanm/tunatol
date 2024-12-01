@@ -1,6 +1,6 @@
 "use client"
 
-import { CurrentUser } from '@/hooks';
+import { CurrentUser, useToast } from '@/hooks';
 import React from 'react'
 import { PaystackButton, usePaystackPayment } from 'react-paystack'
 import { useStoreContext } from './provider/storeProvider';
@@ -13,15 +13,16 @@ type Props = {
 }
 
 export default function PaystackPayment() {
-  // const { createBooking } = useStoreContext()
+  const { createBooking } = useStoreContext()
+  const toast = useToast()
   const config: HookConfig = {
-    reference: (new Date()).getTime().toString(),
+    // reference: (new Date()).getTime().toString(),
     email: "user@example.com",
     amount: 20000 * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
     metadata: {
       name: "bolu",
-      phone: "773633",
+      // phone: "773633",
       custom_fields: [
         {
           display_name: "Booking Id",
@@ -36,8 +37,19 @@ export default function PaystackPayment() {
 
   // you can call this function anything
   const onSuccess = (reference: any) => {
-    console.log(reference);
-    // createBooking()
+    if (reference.status === "success") {
+      toast({
+        status: 'success',
+        text: "You've successfully made a reservation",
+      });
+      return
+    }else{
+      toast({
+        status: 'error',
+        text: "error while making a reservation",
+    });
+      return;
+    }
   };
 
   // you can call this function anything
@@ -47,14 +59,19 @@ export default function PaystackPayment() {
   }
   const initializePayment = usePaystackPayment(config);
   const makeReservation = async () => {
+    // TODO: add authentication
     // const book = await createBooking()
     const book = {
       bookingId: "3977625string"
     }
-    let id: any = config?.metadata?.custom_fields && config?.metadata?.custom_fields[0]
-    id.value = book?.bookingId
-    console.log(id,JSON.stringify(config))
-    initializePayment({ onSuccess, onClose })
+    if(book?.bookingId){
+      let id: any = config?.metadata?.custom_fields && config?.metadata?.custom_fields[0]
+      id.value = book?.bookingId
+      console.log(id, book,JSON.stringify(config))
+      initializePayment({ onSuccess, onClose })
+    }else{
+      return ;
+    }
   }
   return (
     <div>

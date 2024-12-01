@@ -47,8 +47,8 @@ export async function CreateBooking(
 export async function CreateTransaction(
   transaction: Transaction
 ) {
-  const { userId, user_type } = await CurrentUser();
-  const user: any = "ADMIN";
+  // const { userId, user_type } = await CurrentUser();
+  // const user: any = "ADMIN";
   const {
     amount,
     card_type,
@@ -60,12 +60,12 @@ export async function CreateTransaction(
 
   try {
     // Authentication check
-    if (!userId) {
-      return {
-        success: false,
-        error: " Unauthorized to reserve a room",
-      };
-    }
+    // if (!userId) {
+    //   return {
+    //     success: false,
+    //     error: " Unauthorized to reserve a room",
+    //   };
+    // }
 
     // create products
     const newTransaction = await prisma.transaction.create({

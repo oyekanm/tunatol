@@ -17,7 +17,7 @@ export default function BookingCalenderCheckout({ room }: Props) {
     return (
         <div className='grid gap-8 mt-8'>
             <div className='grid gap-4'>
-                <p className='text-[1.8rem] font-semibold'>{name}</p>
+                <p className='block md:hidden text-[1.8rem] font-semibold'>{name}</p>
                 <div className='p-4 '>
                     <p className='hidden md:block text-[2rem] font-semibold'>About this space</p>
                     <RichTextRenderer content={description} />
