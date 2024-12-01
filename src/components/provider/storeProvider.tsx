@@ -1,6 +1,8 @@
 // context/PageContext.tsx
 'use client';
 
+import { CreateBooking } from '@/actions/bookingActions';
+import { useToast } from '@/hooks';
 import { bookingSchema } from '@/lib/schema/roomSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { differenceInDays } from 'date-fns';
@@ -30,29 +32,18 @@ type StoreContextType = {
   setHeight: React.Dispatch<React.SetStateAction<number>>,
   height: number,
   days: number,
-  createBooking: () => Promise<void>
+  createBooking: () => Promise<{
+    bookingId: string;
+} | undefined>
 };
 
-const StoreContext = createContext<StoreContextType>({
-  currentPage: 1,
-  setCurrentPage: () => { },
-  showNav: false,
-  setShowNav: () => { },
-  changeFormValue: () => { },
-  values: undefined,
-  dateRange: "",
-  setDateRange: () => { },
-  changeDate: () => { },
-  days: 0,
-  setHeight: () => { },
-  height: 0,
-  createBooking: async () => { }
-});
+const StoreContext = createContext<StoreContextType>(null as any);
 
 export default function StoreProvider({ children }: { children: React.ReactNode }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [showNav, setShowNav] = useState(false)
   const [height, setHeight] = useState<number>(0);
+  const toast = useToast()
   const [dateRange, setDateRange] = useState<any>([
     {
       startDate: new Date(),
@@ -103,7 +94,29 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   const createBooking = async () => {
     // form.handleSubmit()
     const results = bookingSchema.safeParse(form.getValues())
-    console.log(results)
+    if(results.success){
+      const response = await CreateBooking(results.data)
+          // error handling
+          if (response.success === false) {
+            console.log(response?.error)
+            toast({
+                status: 'error',
+                text: response?.error,
+            });
+            return;
+        }
+        // data successfully recieved
+        if (response.success) {
+            toast({
+                status: 'normal',
+                text: 'make payment to complete your reservation',
+            });
+            form.reset()
+            return {bookingId:response.data?.id as string}
+        }
+    }else{
+      console.log(results.error)
+    }
   }
   return (
     <StoreContext.Provider value={{ currentPage, setCurrentPage, showNav, setShowNav, changeFormValue, dateRange, setDateRange, changeDate, days, height, setHeight, createBooking }}>

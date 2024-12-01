@@ -8,41 +8,59 @@ import { Button } from './reusable';
 import { HookConfig } from 'react-paystack/dist/types';
 
 type Props = {
-  total:number;
+  total: number;
   // user:
 }
 
 export default function PaystackPayment() {
-  const {createBooking} = useStoreContext()
-  const config:HookConfig = {
+  // const { createBooking } = useStoreContext()
+  const config: HookConfig = {
     reference: (new Date()).getTime().toString(),
     email: "user@example.com",
     amount: 20000 * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey:process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
-};
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
+    metadata: {
+      name: "bolu",
+      phone: "773633",
+      custom_fields: [
+        {
+          display_name: "Booking Id",
+          variable_name: "bookingId",
+          value: "orderId"
+        }
 
-console.log(process.env.PAYSTACK_SECRET_KEY, process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY)
+      ]
+    },
+  };
 
-// you can call this function anything
-const onSuccess = (reference:any) => {
-  console.log(reference);
-  // createBooking()
-};
 
-// you can call this function anything
-const onClose = () => {
-  // implementation for  whatever you want to do when the Paystack dialog closed.
-  console.log('closed')
-}
-const initializePayment = usePaystackPayment(config);
-const makeReservation = ()=>{
-  initializePayment({onSuccess, onClose})
-}
-return (
-  <div>
+  // you can call this function anything
+  const onSuccess = (reference: any) => {
+    console.log(reference);
+    // createBooking()
+  };
+
+  // you can call this function anything
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    console.log('closed')
+  }
+  const initializePayment = usePaystackPayment(config);
+  const makeReservation = async () => {
+    // const book = await createBooking()
+    const book = {
+      bookingId: "3977625string"
+    }
+    let id: any = config?.metadata?.custom_fields && config?.metadata?.custom_fields[0]
+    id.value = book?.bookingId
+    console.log(id,JSON.stringify(config))
+    initializePayment({ onSuccess, onClose })
+  }
+  return (
+    <div>
       <Button text='Reserve' clx='text-[1.8rem] py-8 w-full' click={makeReservation} />
-  </div>
-);
+    </div>
+  );
 }
 
 

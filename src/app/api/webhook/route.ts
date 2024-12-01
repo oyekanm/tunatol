@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { prisma } from '@/lib';
+import { CreateTransaction } from '@/actions/bookingActions';
 
 // Your secret key should be in .env.local
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY!;
@@ -63,30 +64,34 @@ async function handleSuccessfulPayment(data: any) {
     customer,
     status,
     paid_at,
-    metadata
+    metadata,
+    channel,
+    authorization
+
   } = data;
 
   
   // First verify with Paystack directly
+  const {custom_fields } = metadata;
   const verifiedTx = await verifyTransaction(reference);
   
-  console.log(data,verifiedTx)
-//   if (verifiedTx.status === 'success') {
-//     // Here's where you'd update your database
-//     // If you're using Prisma, it might look like this:
-//     await prisma.transaction.update({
-//       where: { reference },
-//       data: {
-//         status: 'paid',
-//         paidAmount: amount / 100,
-//         paidAt: new Date(paid_at),
-//         customerEmail: customer.email
-//       }
-//     });
+  console.log("custom",custom_fields,data)
+  if (verifiedTx.status === 'success') {
+    // Create a transaction in db
+    const trax:any = {
+        amount:amount / 100,
+        card_type:authorization?.card_type || null,
+        paymentMethod:channel,
+        reference,
+        bookingId:"hheke",
+        customerEmail: customer.email
+    }
 
-//     // Send confirmation email using your email service
-//     await sendPaymentConfirmation(customer.email, reference);
-//   }
+    await CreateTransaction(trax)
+
+    // Send confirmation email using your email service
+    // await sendPaymentConfirmation(customer.email, reference);
+  }
 }
 
 // Handle refund processing

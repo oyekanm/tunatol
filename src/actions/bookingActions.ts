@@ -8,12 +8,11 @@ import { validateRoomOwnership } from "@/utils/validations";
 // TODO: create aa useable auth check
 
 export async function CreateBooking(
-  booking: Booking,transaction:Transaction
+  booking: Booking
 ): Promise<ActionResponse<Booking>> {
   const { userId, user_type } = await CurrentUser();
   const user: any = "ADMIN";
   const { endDate, roomId, startDate, totalCost } = booking;
-  const {paymentMethod} = transaction
 
   try {
     // Authentication check
@@ -32,19 +31,56 @@ export async function CreateBooking(
         totalCost,
         roomId,
         userId,
-        status: "RESERVED",
+        status: "PENDING",
         type: user_type === user ? "OFFLINE" : "ONLINE",
-        Transaction:{
-          create:{
-            amount:totalCost,
-            paymentMethod,
-            status:"SUCCESSFUL",
-            type:"PAYMENT",
-          }
-        }
       },
     });
     return { success: true, data: newBooking };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      error: `error while creating a room.`,
+    };
+  }
+}
+export async function CreateTransaction(
+  transaction: Transaction
+) {
+  const { userId, user_type } = await CurrentUser();
+  const user: any = "ADMIN";
+  const {
+    amount,
+    card_type,
+    paymentMethod,
+    reference,
+    bookingId,
+    customerEmail,
+  } = transaction;
+
+  try {
+    // Authentication check
+    if (!userId) {
+      return {
+        success: false,
+        error: " Unauthorized to reserve a room",
+      };
+    }
+
+    // create products
+    const newTransaction = await prisma.transaction.create({
+      data: {
+        paymentMethod,
+        amount,
+        bookingId,
+        card_type,
+        customerEmail,
+        reference,
+        status: "SUCCESSFUL",
+        type: "PAYMENT",
+      },
+    });
+    return { success: true, data: newTransaction };
   } catch (error) {
     console.log(error);
     return {

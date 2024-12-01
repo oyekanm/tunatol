@@ -97,6 +97,25 @@ export default function SingleRoomMainLayout({ room,session }: Props) {
                     </Modal>
                 </div>
             </section>
+            <section className='Container grid gap-4 py-8'>
+                <div className='border-2 rounded-[10px] p-4'>
+                   <p className='text-[1.4rem] font-semibold '> Rules to abide by</p>
+                   <div className='grid gap-2 mt-4 [&>p]:text-[1.3rem] ' >
+                    <p>5 guests maximum</p>
+                    <p>commercial photos not allowed</p>
+                    <p>pet(s) not allowed</p>
+                    <p>smoking not allowed</p>
+                    <p>check-in time: 8:00 AM</p>
+                    <p>check-out time: 5:00 AM</p>
+                   </div>
+                </div>
+                <div className='border-2 rounded-[10px] p-4'>
+                   <p className='text-[1.4rem] font-semibold '> Cancellation policy</p>
+                   <div className='[&>p]:text-[1.3rem] mt-4  '>
+                    <p>review host's privacy policy</p>
+                   </div>
+                </div>
+            </section>
         </div>
     )
 }
