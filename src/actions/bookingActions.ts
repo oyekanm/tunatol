@@ -23,6 +23,8 @@ export async function CreateBooking(
       };
     }
 
+    // TODO: check the dates arent available
+
     // create products
     const newBooking = await prisma.booking.create({
       data: {
@@ -44,9 +46,7 @@ export async function CreateBooking(
     };
   }
 }
-export async function CreateTransaction(
-  transaction: Transaction
-) {
+export async function CreateTransaction(transaction: Transaction) {
   // const { userId, user_type } = await CurrentUser();
   // const user: any = "ADMIN";
   const {

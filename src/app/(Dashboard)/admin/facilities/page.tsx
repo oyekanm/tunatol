@@ -1,8 +1,10 @@
 import { FacilityForm } from '@/components/form'
+import { prisma } from '@/lib'
 import React from 'react'
 
-export default function page() {
+export default async function page() {
+const data = await prisma.facility.findMany()
   return (
-    <FacilityForm />
+    <FacilityForm data={data} />
   )
 }

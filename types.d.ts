@@ -64,16 +64,21 @@ type Booking = {
   endDate:Date;
   totalCost:number;
   roomId:string;
+  id?: string;
+  userId:string
 }
 type Transaction = {
     id?:string,
     amount:number,
-    status:TransactionStatus,
+    status?:TransactionStatus,
     type:TransactionType,
     paymentMethod:string,
     createdAt?: Date,
     updatedAt?: Date,
-    bookingId?:string
+    bookingId?:string,
+    customerEmail?:string,
+    reference:string,
+    card_type:string
 }
 type Facility = {
     id?:tring,

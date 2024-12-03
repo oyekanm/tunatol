@@ -156,3 +156,32 @@ html{
   }
 
 }
+
+.status {
+  padding: 5px;
+  border-radius: 5px;
+}
+  .successful {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.151);
+  }
+  .delivered {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.151);
+  }
+   .pending {
+    color: goldenrod;
+    background-color: rgba(189, 189, 3, 0.103);
+  }
+  .failed {
+    background-color: rgba(255, 0, 0, 0.05);
+    color: crimson;
+  }
+  .reserved{
+    color: sienna;
+    background-color: rgba(55, 128, 0, 0.151);
+  }
+  .checkout {
+    color: green;
+    background-color: rgba(0, 128, 0, 0.151);
+  }

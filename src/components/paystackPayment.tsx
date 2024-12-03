@@ -6,6 +6,7 @@ import { PaystackButton, usePaystackPayment } from 'react-paystack'
 import { useStoreContext } from './provider/storeProvider';
 import { Button } from './reusable';
 import { HookConfig } from 'react-paystack/dist/types';
+import { usePathname, useRouter } from 'next/navigation';
 
 type Props = {
   total: number;
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export default function PaystackPayment() {
+  const router = useRouter()
   const { createBooking } = useStoreContext()
   const toast = useToast()
   const config: HookConfig = {
@@ -29,10 +31,11 @@ export default function PaystackPayment() {
           variable_name: "bookingId",
           value: "orderId"
         }
-
+        
       ]
     },
   };
+
 
 
   // you can call this function anything
@@ -42,28 +45,28 @@ export default function PaystackPayment() {
         status: 'success',
         text: "You've successfully made a reservation",
       });
-      return
     }else{
       toast({
         status: 'error',
         text: "error while making a reservation",
     });
-      return;
     }
+    console.log("refresshing")
+    router.refresh()
   };
 
   // you can call this function anything
   const onClose = () => {
     // implementation for  whatever you want to do when the Paystack dialog closed.
     console.log('closed')
+    router.refresh()
   }
   const initializePayment = usePaystackPayment(config);
   const makeReservation = async () => {
-    // TODO: add authentication
-    // const book = await createBooking()
-    const book = {
-      bookingId: "3977625string"
-    }
+    const book = await createBooking()
+    // const book = {
+    //   bookingId: "3977625string"
+    // }
     if(book?.bookingId){
       let id: any = config?.metadata?.custom_fields && config?.metadata?.custom_fields[0]
       id.value = book?.bookingId

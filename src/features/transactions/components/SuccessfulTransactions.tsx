@@ -1,5 +1,5 @@
-import { OrderColumn } from "@/app/(Dashboard)/admin/bookings/OrderColumn";
 import { TableComponent } from "@/components/reusable";
+import { TransactionColumn } from "@/components/tableColumns";
 
 const data = [
     {
@@ -66,8 +66,15 @@ const data = [
       payment_method: "Alipay"
     }
   ];
+
+  type Props = {
+    data:Transaction[],
+    totalPages: number;
+    currentPage: number;
+  }
   
-  export default function SuccessfulTransactions() {
+  
+  export default function SuccessfulTransactions({data,currentPage,totalPages}:Props) {
     // const { data, error, isLoading } = FetchData({url:'/api/products'}) 
     // console.log(OrderColumn)
     return (
@@ -80,9 +87,8 @@ const data = [
             data?.length > 0 && (
               <TableComponent
                 check={false}
-                column={OrderColumn} data={data} headerText='Orders'
-                path='/admin-dashboard/orders'
-                pathText='View'
+                column={TransactionColumn} data={data} headerText='Transaction Payments'
+                currentPage={currentPage} totalPages={totalPages}
               />
             )
           }

@@ -1,7 +1,7 @@
 "use client"
 
 import { Modal, TableComponent, UploadImageComp } from '@/components/reusable';
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Form,
     FormControl,
@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { facilityInput } from '@/components/form/formInputs';
 import { z } from 'zod';
-import { OrderColumn } from '@/app/(Dashboard)/admin/bookings/OrderColumn';
+import { FacilityColumn } from '../tableColumns';
 
 const data = [
     {
@@ -85,15 +85,27 @@ const data = [
         payment_method: "Alipay"
     }
 ];
+type Props ={
+    data:Facility[]
+}
 
-export default function FacilityForm() {
+
+export default function FacilityForm({data}:Props) {
+    const [image,setImage] = useState()
     const form = useForm<z.infer<typeof facilitySchema>>({
         resolver: zodResolver(facilitySchema),
         defaultValues: {
             name: "",
         },
     })
-    const getImageData = (data: any) => { }
+    const getImageData = async (imageData: any) => {
+        
+        console.log(imageData)
+
+        form.setValue("image", imageData)
+        setImage(imageData)
+        // localStorage.setItem("room",JSON.stringify(form.getValues()))
+    }
 
 
     const labelClass = "font-semibold text-[2rem] text-slate-700 block mb-2 dark:text-white"
@@ -102,7 +114,7 @@ export default function FacilityForm() {
         <div>
             <TableComponent
                 check={false}
-                column={OrderColumn} data={data} headerText='Facilities'
+                column={FacilityColumn} data={data} headerText='Facilities'
 
             >
                 <Modal trigger='Add a Facility'>

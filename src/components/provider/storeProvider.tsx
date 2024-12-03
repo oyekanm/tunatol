@@ -6,6 +6,7 @@ import { useToast } from '@/hooks';
 import { bookingSchema } from '@/lib/schema/roomSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { differenceInDays } from 'date-fns';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { createContext, useState, useContext, Dispatch, SetStateAction, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -44,6 +45,8 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   const [showNav, setShowNav] = useState(false)
   const [height, setHeight] = useState<number>(0);
   const toast = useToast()
+  const router = useRouter()
+  const path = usePathname()
   const [dateRange, setDateRange] = useState<any>([
     {
       startDate: new Date(),
@@ -93,6 +96,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
 
   console.log(form.formState.errors)
 
+
   const createBooking = async () => {
     // form.handleSubmit()
     const results = bookingSchema.safeParse(form.getValues())
@@ -105,6 +109,12 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
         toast({
           status: 'error',
           text: response?.error,
+          clickText: response?.error === " Unauthorized to reserve a room" ? "Login" : "",
+          click() {
+            const url = encodeURIComponent(path)
+            router.push(`/login?callbackUrl=${url}`)
+            router.refresh()
+          },
         });
         return;
       }

@@ -1,1 +1,5 @@
 export {default as RoomColumn} from "./roomColumn"
+export {default as TransactionColumn} from "./transactionColumn"
+export {default as UserColumn} from "./userColumn"
+export {default as BookingColumn} from "./bookingColumn"
+export {default as FacilityColumn} from "./facilityColumn"

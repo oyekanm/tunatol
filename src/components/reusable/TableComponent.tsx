@@ -1,6 +1,7 @@
 "use client"
 import { useToast } from '@/hooks';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 type Props = {
@@ -12,8 +13,10 @@ type Props = {
     pathText?: string;
     headerText?: string;
     check?: boolean;
-    children?:React.ReactNode,
-    deleteChecked?:any
+    children?: React.ReactNode,
+    deleteChecked?: any,
+    totalPages?: any;
+    currentPage?: any;
 }
 
 // export default function PostList({ 
@@ -23,18 +26,18 @@ type Props = {
 //   }: PostListProps) {
 //     const router = useRouter();
 //     const { setCurrentPage } = usePageContext();
-  
+
 //     const handlePageChange = (newPage: number) => {
 //       setCurrentPage(newPage);
 //       router.push(`/posts?page=${newPage}`);
 //     };
-  
+
 //     return (
 //       <div>
 //         {posts.map((post) => (
 //           <div key={post.id}>{post.title}</div>
 //         ))}
-  
+
 //         <div className="flex justify-center space-x-2 mt-4">
 //           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
 //             <button
@@ -57,9 +60,13 @@ type Props = {
 
 
 
-export default function TableComponent({ column, data, hrefText, path, href, pathText, headerText, check,children,deleteChecked }: Props) {
+export default function TableComponent({ column, data, hrefText, path, href, pathText, headerText, check, children, deleteChecked, currentPage, totalPages }: Props) {
     const toast = useToast()
     const [ids, setIds] = useState<string[]>([])
+    const router = useRouter();
+
+
+
     const allIds = data.map((pr: any) => pr.id)
     const checked = (id: string) => {
         return ids.includes(id)
@@ -82,23 +89,33 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
     // console.log(data.length  , ids.length)
     const addAllIds = (id: string[]) => {
         // console.log(allChecked())
-        if(data.length  === ids.length){
+        if (data.length === ids.length) {
             setIds([])
             return;
         }
         setIds(id)
     }
-    const deleteRecord = ()=>{
+    const deleteRecord = () => {
         toast({
             status: 'warning',
             text: 'Are you sure you want to delete?',
-            clickText:"YES",
-            click:()=>deleteChecked(ids),
-            duration:30000,
+            clickText: "YES",
+            click: () => deleteChecked(ids),
+            duration: 30000,
         });
-        
-    }
 
+    }
+    const handlePageChange = (type: string) => {
+        let page;
+        if (type === "add") {
+            page = currentPage + 1
+        } else {
+            page = currentPage - 1
+        }
+        router.push(`?page=${page}`);
+    };
+
+    // console.log(data.le)
     return (
         // <!-- Table Section -->
         <div className="max-w-[136rem] mx-auto">
@@ -120,7 +137,7 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
                                             Delete ({ids.length})
                                         </button>}
                                         {/* <!-- Input --> */}
-                                       
+
                                         {children && children}
                                         {hrefText && (
                                             <Link
@@ -214,21 +231,21 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
                             {/* <!-- End Table --> */}
 
                             {/* <!-- Footer --> */}
-                            {data.length > 15 && <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
+                            {totalPages > 1 && <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
                                 <div>
                                     <p className="text-[1.1rem] text-gray-600 dark:text-neutral-400">
-                                        <span className="font-semibold  text-gray-800 dark:text-neutral-200">{data.length}</span> results
+                                       page <span className="font-semibold  text-gray-800 dark:text-neutral-200">{currentPage}</span>
                                     </p>
                                 </div>
 
                                 <div>
                                     <div className="inline-flex items-center gap-x-2">
-                                        <button disabled={data.length < 15} type="button" className="py-2 px-4 inline-flex items-center gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                                        <button onClick={()=>handlePageChange("sub")} disabled={currentPage === 1} type="button" className="py-2 px-4 inline-flex items-center gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
                                             <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
                                             Prev
                                         </button>
 
-                                        <button disabled={data.length < 15} type="button" className="py-2 px-4 inline-flex items-center gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+                                        <button onClick={()=>handlePageChange("add")} disabled={currentPage === totalPages} type="button" className="py-2 px-4 inline-flex items-center gap-x-2 text-[1.2rem] font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
                                             Next
                                             <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
                                         </button>

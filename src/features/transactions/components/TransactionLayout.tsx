@@ -7,7 +7,14 @@ import { useSearchParams } from 'next/navigation'
 import { cn } from '@/lib'
 import Link from 'next/link'
 
-export default function TransactionLayout() {
+type Props = {
+  payment:Transaction[],
+  refund?:any,
+  totalPages: number;
+  currentPage: number;
+}
+
+export default function TransactionLayout({payment,refund,currentPage,totalPages}:Props) {
     const path = useSearchParams().get("type")
 
     const linkText = ""
@@ -24,8 +31,8 @@ export default function TransactionLayout() {
       </nav>
     </div>
     <div>
-      {!path && <SuccessfulTransactions />}
-      {path === "refunds" && <RefundTransactions />}
+      {!path && <SuccessfulTransactions data={payment} currentPage={currentPage} totalPages={totalPages} />}
+      {path === "refunds" && <RefundTransactions data={refund} />}
     </div>
 </div>
   )

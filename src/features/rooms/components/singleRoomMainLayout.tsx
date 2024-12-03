@@ -1,7 +1,7 @@
 "use client"
 
 import { useStoreContext } from '@/components/provider/storeProvider'
-import { ImageCarousel, Modal, ReviewCard, ShareButton } from '@/components/reusable'
+import { ImageCarousel, ImageMasonry, Modal, ReviewCard, ShareButton } from '@/components/reusable'
 import { Button } from '@/components/ui/button'
 import { calculateDiscountedPrice } from '@/utils'
 import { ChevronLeft } from 'lucide-react'
@@ -65,8 +65,13 @@ export default function SingleRoomMainLayout({ room,session }: Props) {
                     url={window.location.href}
                 />
             </div>
-            <div className='h-[45rem] sm:h-[80vh]'>
-                <ImageCarousel files={room?.images} moveBtn={false} />
+            <div className='block md:hidden h-[45rem]'>
+               <ImageCarousel files={room?.images} moveBtn={false} />
+            </div>
+            <div className={`hidden md:block  ${room.images.length < 5 ? "h-[80vh]":"h-[700px] pb-8"} `}>
+               {room.images.length < 5 ? 
+               <ImageCarousel files={room?.images} moveBtn={false} />:
+                <ImageMasonry />}
             </div>
             <SingleRoomContentLayout room={room} />
 

@@ -8,7 +8,7 @@ export default function DashboardHeader() {
     const bd = path.split("/").filter(b => b !== "")
     return (
         <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 lg:ps-[260px] dark:bg-neutral-800 dark:border-neutral-700">
-            <nav className="px-4 sm:px-6 flex justify-between basis-full items-center w-full mx-auto">
+            <nav className="px-4 py-6 sm:px-6 flex justify-between basis-full items-center w-full mx-auto">
                 <div className="me-5 lg:me-0 lg:hidden">
                     {/* <!-- Logo --> */}
                     <a className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Preline">
@@ -41,7 +41,7 @@ export default function DashboardHeader() {
                         </ul>
                     </div>
 
-                    <div className="flex flex-row items-center justify-end gap-1">
+                    {/* <div className="flex flex-row items-center justify-end gap-1">
                         <button type="button" className="md:hidden size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
                             <svg className="shrink-0 size-8" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                             <span className="sr-only">Search</span>
@@ -57,7 +57,6 @@ export default function DashboardHeader() {
                             <span className="sr-only">Activity</span>
                         </button>
 
-                        {/* <!-- Dropdown --> */}
                         <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
                             <button id="hs-dropdown-account" type="button" className="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
                                 <img className="shrink-0 size-[38px] rounded-full" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Avatar" />
@@ -88,8 +87,7 @@ export default function DashboardHeader() {
                                 </div>
                             </div>
                         </div>
-                        {/* <!-- End Dropdown --> */}
-                    </div>
+                    </div> */}
                 </div>
             </nav>
         </header>

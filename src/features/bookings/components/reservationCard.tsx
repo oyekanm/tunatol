@@ -22,10 +22,17 @@ export default function ReservationCard({ price, discount }: Props) {
   const { dateRange, changeFormValue, days, setHeight, height } = useStoreContext()
   const cardRef: any = useRef(null)
 
-
+  const width = window.innerWidth 
+// TODO:make it react to width change
   useEffect(() => {
+    if(window.innerWidth > 770){
+      setHeight(0)
+      return;
+    }
     setHeight(cardRef.current?.clientHeight || 0);
-  }, [expand]);
+  }, [expand, window]);
+
+  console.log(width)
 
   const toggleExpand = () => {
     setExpand(!expand)
@@ -43,7 +50,7 @@ export default function ReservationCard({ price, discount }: Props) {
     return totals
   }, [finalPrice, startDate, endDate])
   return (
-    <div ref={cardRef} className={`${!expand && "!p-4 !gap-2 md:!gap-6 md:!p-8"} text-start w-full fixed bottom-0 z-[999] left-0 rounded-lg right-0 md:rounded-tr-[20px] md:rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800`}>
+    <div ref={cardRef} className={`${!expand && "!p-4 !gap-2 md:!gap-6 md:!p-8"} text-start w-full fixed bottom-0 z-[999] left-0 md:rounded-lg right-0 rounded-tr-[20px] rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800`}>
       <div className='flex items-center justify-between'>
         <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200">
           <NairaSign />{finalPrice}

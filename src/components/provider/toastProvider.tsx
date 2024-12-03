@@ -55,7 +55,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ toast }}>
       {children}
-      <div className='fixed z-[999] top-8 right-4 sm:right-12 grid gap-2'>
+      <div className='fixed z-[100000] top-8 right-4 sm:right-12 grid gap-2'>
         {toastQueue.map((toastItem, index) => (
           <Toast
             key={index}

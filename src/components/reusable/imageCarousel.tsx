@@ -12,7 +12,7 @@ import Autoplay from "embla-carousel-autoplay"
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from './button'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Props = {
   files: Image[];
@@ -33,7 +33,17 @@ const btnTextStyle = "h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-no
 
 export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true,session }: Props) {
   const [api, setApi] = useState<CarouselApi>()
-  // console.log(api)
+  const [active, setActive] = useState(0)
+  console.log(api?.selectedScrollSnap(), active)
+  // TODO: set the active slide
+  // const setActive = () =>{
+  //   setApi()
+  // }
+
+  useEffect(()=>{
+    setActive(api?.selectedScrollSnap() as number)
+  },[api?.selectedScrollSnap()])
+
   return (
     <section className='relative h-full'>
       <Carousel

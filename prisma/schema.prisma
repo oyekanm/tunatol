@@ -17,13 +17,13 @@ model User {
   id        String     @id @default(cuid())
   name      String
   email     String     @unique
-  password  String
+  password  String?
   passcode  String?
   user_type UserType   @default(USER)
-  bookings  Booking[]
-  rooms     Room[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  bookings  Booking[]
+  rooms     Room[]
   Reviews   Reviews[]
   Account   Account[]
   Session   Session[]
@@ -149,6 +149,9 @@ model Transaction {
   type          TransactionType   @default(PAYMENT)
   paymentMethod String
   errorMessage  String?
+  customerEmail String?
+  reference String?
+  card_type String?
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
   booking       Booking?          @relation(fields: [bookingId], references: [id])
