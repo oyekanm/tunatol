@@ -24,6 +24,15 @@ export async function CreateBooking(
     }
 
     // TODO: check the dates arent available
+    const availability = await checkBookingAvailability(
+      startDate,
+      endDate,
+      roomId
+    )
+
+    if (!availability.available) {
+      return { success: false, error: availability.error }
+    }
 
     // create products
     const newBooking = await prisma.booking.create({
@@ -88,6 +97,76 @@ export async function CreateTransaction(transaction: Transaction) {
       error: `error while creating a room.`,
     };
   }
+}
+
+export async function checkBookingAvailability(
+  checkIn: Date,
+  checkOut: Date,
+  roomId: string
+) {
+  try {
+    // Check for any overlapping bookings
+    const overlappingBookings = await prisma.booking.findMany({
+      where: {
+        roomId,
+        AND: [
+          {
+            OR: [
+              {
+                // Check if new check-in date falls within existing booking
+                AND: {
+                  startDate: { lte: checkIn },
+                  endDate: { gt: checkIn }
+                }
+              },
+              {
+                // Check if new check-out date falls within existing booking
+                AND: {
+                  startDate: { lt: checkOut },
+                  endDate: { gte: checkOut }
+                }
+              },
+              {
+                // Check if new booking completely encompasses existing booking
+                AND: {
+                  startDate: { gte: checkIn },
+                  endDate: { lte: checkOut }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    })
+
+    if (overlappingBookings.length > 0) {
+      return {
+        available: false,
+        error: "Selected dates overlap with existing reservations"
+      }
+    }
+
+    return { available: true }
+  } catch (error) {
+    return {
+      available: false,
+      error: "Error checking availability"
+    }
+  }
+}
+
+
+// Function to get disabled dates for calendar
+export async function getDisabledDates(roomId: string) {
+  const bookings = await prisma.booking.findMany({
+    where: { roomId },
+    select: { startDate: true, endDate: true }
+  })
+
+  return bookings.map(booking => ({
+    start: booking.startDate,
+    end: booking.endDate
+  }))
 }
 // export async function CreateReFund(
 //   refund: Transaction

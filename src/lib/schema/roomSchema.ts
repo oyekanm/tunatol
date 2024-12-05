@@ -50,7 +50,9 @@ export const Image = z.object({
 export const reviewSchema = z.object({
   id: z.string().optional(),
   roomId: z.string(),
-  rating: z.number(),
-  comment: z.string(),
+  rating:z.coerce
+  .number()
+  .gte(1, { message: "please add a star rating" }),
+  comment: z.string().min(2, "please add a comment"),
   userId: z.string(),
 });

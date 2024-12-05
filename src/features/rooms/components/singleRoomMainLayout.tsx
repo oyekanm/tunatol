@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button'
 import { calculateDiscountedPrice } from '@/utils'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import SingleRoomContentLayout from './singleRoomContentLayout'
 import { useSession } from 'next-auth/react'
+import { getDisabledDates } from '@/actions/bookingActions'
+import { eachDayOfInterval } from 'date-fns'
 
 type Props = {
     room: Room,
@@ -24,8 +26,9 @@ export default function SingleRoomMainLayout({ room, session }: Props) {
 
     const router = useRouter()
     const { finalPrice } = calculateDiscountedPrice(room.price, room.discount_percent)
-    const { setShowNav, changeFormValue, values } = useStoreContext()
-    setShowNav(true)
+    const { setShowNav, changeFormValue, values,setDisabledDates, setAnnounce,announce } = useStoreContext()
+   
+
 
     const goBack = () => {
         router.back()
@@ -43,10 +46,33 @@ export default function SingleRoomMainLayout({ room, session }: Props) {
     ]
 
     useEffect(() => {
+        setShowNav(true)
         for (let i = 0; i < events.length; i++) {
             changeFormValue(events[i])
+            
         }
     }, [])
+
+    useEffect(() => {
+        async function fetchDisabledDates() {
+            const roomId = room.id as string
+          const bookedRanges = await getDisabledDates(roomId)
+          
+          // Create array of all disabled dates
+          const allDisabledDates = bookedRanges.flatMap(range => 
+            eachDayOfInterval({ start: range.start, end: range.end })
+          )
+          
+          
+          setDisabledDates(allDisabledDates)
+        }
+    
+        fetchDisabledDates()
+        setAnnounce(room?.available_announcement)
+      }, [room.id])
+
+      console.log(announce)
+      console.log(room)
 
 
     return (

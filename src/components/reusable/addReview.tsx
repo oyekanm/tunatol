@@ -56,6 +56,8 @@ export default function AddReview({ id }: Props) {
 
     const result = reviewSchema.safeParse(values)
 
+    console.log(result)
+
     if (result.success) {
       // console.log("first")
       const response = await createReview(result.data, path)

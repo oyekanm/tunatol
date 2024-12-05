@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { differenceInDays } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { createContext, useState, useContext, Dispatch, SetStateAction, useMemo } from 'react';
+import React, { createContext, useState, useContext, Dispatch, SetStateAction, useMemo, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -37,6 +37,10 @@ type StoreContextType = {
   createBooking: () => Promise<{
     bookingId: string;
   } | undefined>
+  disabledDates: Date[],
+  setDisabledDates: any,
+  announce:string, 
+  setAnnounce:any
 };
 
 const StoreContext = createContext<StoreContextType>(null as any);
@@ -45,6 +49,8 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   const [currentPage, setCurrentPage] = useState(1);
   const [showNav, setShowNav] = useState(false)
   const [height, setHeight] = useState<number>(0);
+  const [disabledDates, setDisabledDates] = useState<Date[]>([])
+  const [announce, setAnnounce] = useState("")
   const toast = useToast()
   const router = useRouter()
   const path = usePathname()
@@ -96,7 +102,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     console.log(form.getValues())
   }
 
-  console.log(Object.entries(form.formState.errors))
+  // console.log(Object.entries(form.formState.errors))
 
 
   const createBooking = async () => {
@@ -135,6 +141,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
             router.push(`/login?callbackUrl=${url}`)
             router.refresh()
           },
+          duration: 10000
         });
         return;
       }
@@ -152,12 +159,18 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     }
   }
 
-  // const createBooking = () => {
-  //   const hh = form.handleSubmit(createBookings)
-  //   // hh.
-  // }
+  useEffect(() => {
+    setAnnounce("")
+  }, [])
+
+
   return (
-    <StoreContext.Provider value={{ currentPage, setCurrentPage, showNav, setShowNav, changeFormValue, dateRange, setDateRange, changeDate, days, height, setHeight, createBooking }}>
+    <StoreContext.Provider
+      value={{
+        currentPage, setCurrentPage, showNav, setShowNav, changeFormValue,
+        dateRange, setDateRange, changeDate, days, height, setHeight,
+        createBooking, disabledDates, setDisabledDates,announce, setAnnounce
+      }}>
       {children}
     </StoreContext.Provider>
   );

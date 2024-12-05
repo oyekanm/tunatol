@@ -30,7 +30,7 @@ export default async function page({ params }: Props) {
     }
   })
 
-  console.log(data)
+  // console.log(data)
 
   if (!data) return <Notfound />;
 

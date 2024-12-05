@@ -9,7 +9,7 @@ import { useStoreContext } from './provider/storeProvider';
 
 export default function DateRangeComponent() {
 
-    const { changeFormValue,changeDate,dateRange,setDateRange } = useStoreContext()
+    const { changeFormValue,changeDate,dateRange,setDateRange,disabledDates } = useStoreContext()
   
     const reset =()=>{
         const events = [
@@ -41,6 +41,7 @@ export default function DateRangeComponent() {
                     ranges={dateRange}
                     onChange={item => changeDate(item)}
                     months={2}
+                    disabledDates={disabledDates}
                     direction={'horizontal'}
                     startDatePlaceholder='Check-in'
                     endDatePlaceholder='Check-out'
@@ -54,6 +55,7 @@ export default function DateRangeComponent() {
                     onChange={item => changeDate(item)}
                     months={1}
                     direction={'horizontal'}
+                    disabledDates={disabledDates}
                     startDatePlaceholder='Check-in'
                     endDatePlaceholder='Check-out'
                     className='w-full'

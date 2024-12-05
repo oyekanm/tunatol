@@ -3,6 +3,7 @@ import Navbar from './navbar'
 import Footer from './footer'
 import { SessionProvider, StoreProvider, ToastProvider } from '@/components/provider'
 import { CurrentUser } from '@/hooks'
+import { Announcement } from '@/components'
 
 
 
@@ -14,6 +15,7 @@ export default async function HomeLayout({ children }: { children: React.ReactNo
       <ToastProvider>
         <StoreProvider>
           <main className='relative'>
+            <Announcement />
             <Navbar session={current} />
             {children}
             <Footer />
