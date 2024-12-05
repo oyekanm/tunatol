@@ -1,21 +1,33 @@
 "use server"
 
+import { CurrentUser } from "@/hooks";
 import { prisma } from "@/lib";
 import { reviewSchema } from "@/lib/schema/roomSchema";
+import { revalidatePath } from "next/cache";
 
-export async function createReview(review: Review) {
-  const results = reviewSchema.safeParse(review);
-  if (results.success) {
+export async function createReview(review: Review,path:string) {
+  const { userId, user_type } = await CurrentUser();
+  // const results = reviewSchema.safeParse(review);
     //   const { userId, color, quantity, size, } = results.data;
+
+    // console.log(path)
+      // Authentication check
+      if (!userId) {
+        return {
+          success: false,
+          error: " Unauthorized to create a room",
+        };
+      }
     try {
       const createOrder = await prisma.reviews.create({
-        data: results.data,
+        data: review as any,
       });
-      return { data: createOrder };
+      console.log("created")
+      // revalidatePath(path)
+      return { data: createOrder, success:true };
     } catch (error) {
       console.log(error);
     }
-  }
 }
 
 export async function updateReview(order: Review, id: string) {

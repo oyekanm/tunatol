@@ -10,10 +10,11 @@ type Props = {
     trigger: string;
     btnExtra?: string;
     extraClick?: any,
-    triggerclx?: ClassValue
+    triggerclx?: ClassValue,
+    chdclx?:string
 }
 
-export default function Modal({ children, btnExtra, trigger, extraClick, triggerclx }: Props) {
+export default function Modal({ children, btnExtra, trigger, extraClick, triggerclx,chdclx }: Props) {
     const [open, setOpen] = useState(false)
     const toggleOpen = () => {
         setOpen(!open)
@@ -29,7 +30,7 @@ export default function Modal({ children, btnExtra, trigger, extraClick, trigger
             {open && (
                 <div className="bg-[rgba(0,0,0,.5)] inset-0 size-full fixed top-0 left-0 start-0 z-[10000] overflow-x-hidden overflow-y-auto">
                     <div className="mt-0 ease-out transition-all sm:max-w-[60rem] sm:w-full m-3 sm:mx-auto">
-                        <div className={`fixed ${open ? "top-0" : " top-[100%]"} transition-all left-0 right-0 md:relative w-full h-full flex flex-col p-4 justify-between bg-white shadow-lg rounded-xl dark:bg-neutral-900`}>
+                        <div className={`fixed ${open ? "top-0" : " top-[100%]"} transition-all mt-12 left-0 right-0 md:relative w-full h-full flex flex-col p-4 justify-between bg-white shadow-lg rounded-xl dark:bg-neutral-900`}>
                             <div className="absolute top-2 end-2">
                                 <Button type="button"
                                     onClick={toggleOpen}
@@ -40,7 +41,7 @@ export default function Modal({ children, btnExtra, trigger, extraClick, trigger
                                 </Button>
                             </div>
 
-                            <div className="p-4 sm:p-10">
+                            <div className={cn("p-4 sm:p-10",chdclx)}>
                                 {children}
 
                             </div>

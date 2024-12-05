@@ -25,6 +25,7 @@ type Review = {
   comment: string;
   createdAt?: string;
   userId: string;
+  user?:User
 };
 interface column {
   key: string;
@@ -42,8 +43,10 @@ type Room = {
   discount_percent?:any;
   available_announcement?:any;
   images:Image[];
-  isAvailable:boolean
-  // createdAt: Date;
+  isAvailable:boolean;
+  Reviews:Review[],
+  bookings:Booking[],
+  // createdAt?: any;
   // updatedAt: Date;
 }
 type User = {
@@ -52,7 +55,10 @@ type User = {
   name:string;
   email:string;
   user_type:UserType;
-  password?:string
+  password?:string,
+  createdAt?: any;
+  bookings:Booking;
+  Reviews:Review
 }
 type ActionResponse<T> = {
   success: boolean;

@@ -1,32 +1,67 @@
 import React from 'react'
 import Modal from './Modal'
+import Image from 'next/image';
+import ImageCarousel from './imageCarousel';
 
-export default function ImageMasonry() {
+type Props = {
+    files: Image[];
+}
+
+export default function ImageMasonry({ files }: Props) {
+    // console.log(files.slice(1), files)
     return (
-        <div className="Container relative py-10 lg:py-14 mx-auto h-full">
+        <div className="Container relative py-8 mx-auto h-full">
             <div className="grid sm:grid-cols-12 gap-6 h-full">
-                <div className="col-span-7 h-full">
-                    <div className="h-full rounded-tl-lg rounded-bl-lg rounded-xl overflow-hidden">
-                        <img className="group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full h-full object-cover" src="https://images.unsplash.com/photo-1606868306217-dbf5046868d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Masonry Cards Image" />
+                <div className="col-span-6 h-full">
+                    <div className="h-full rounded-tl-[10px] rounded-bl-[10px] rounded-xl overflow-hidden">
+                        <Image
+                            src={files[0].url}
+                            className="group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full h-full object-cover"
+                            alt={files[0].key}
+                            width={200}
+                            height={200}
+                        />
                     </div>
                 </div>
-                <div className="col-span-5 grid grid-cols-2 gap-4 h-full">
-                        <div className="h-full overflow-hidden">
-                            <img className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover" src="https://images.unsplash.com/photo-1605629921711-2f6b00c6bbf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Masonry Cards Image" />
-                        </div>
-                        <div className="h-full overflow-hidden">
-                            <img className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover" src="https://images.unsplash.com/photo-1606836576983-8b458e75221d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Masonry Cards Image" />
-                        </div>
-                        <div className="h-full overflow-hidden">
-                            <img className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover" src="https://images.unsplash.com/photo-1598929438701-ef29ab0bb61a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Masonry Cards Image" />
-                        </div>
-                        <div className="h-full overflow-hidden">
-                            <img className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover" src="https://images.unsplash.com/photo-1467043153537-a4fba2cd39ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Masonry Cards Image" />
-                        </div>
+                <div className="col-span-3 grid gap-4 h-full">
+                    {
+                        files.slice(1,3).map((file, index) => {
+                            return (
+                                <div key={index} className={`h-full overflow-hidden  `}>
+                                    <Image
+                                        src={file.url}
+                                        className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover"
+                                        alt={file.key}
+                                        width={200}
+                                        height={200}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
                 </div>
-                <div className='absolute right-8 bottom-8'>
-                    <Modal trigger='show all photos'>
-
+                <div className="col-span-3 grid gap-4 h-full">
+                    {
+                        files.slice(3).map((file, index) => {
+                            return (
+                                <div key={index} className={`h-full overflow-hidden rounded-tr-[10px] rounded-br-[10px]  `}>
+                                    <Image
+                                        src={file.url}
+                                        className="h-full group-hover:scale-105 group-focus:scale-105 transition-transform duration-500 ease-in-out rounded-xl w-full object-cover"
+                                        alt={file.key}
+                                        width={200}
+                                        height={200}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <div className='absolute right-16 bottom-12'>
+                    <Modal trigger='show all photos' triggerclx="'bg-white text-gray-700 border-2 '">
+                        <div className='h-[45rem]'>
+                            <ImageCarousel files={files} moveBtn={false} />
+                        </div>
                     </Modal>
                 </div>
 

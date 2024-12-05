@@ -24,12 +24,12 @@ export const roomSchema = z.object({
 export const bookingSchema = z.object({
   id: z.string().optional(),
   roomId: z.string().min(2),
-  userId: z.string().min(2),
+  userId: z.string().min(5,{message:"you need to login to reserve"}),
   totalCost: z.coerce
     .number()
-    .gte(1, { message: "Price value must be atleast 1 character" }),
-  startDate: z.date() ,
-  endDate: z.date(),
+    .gte(1, { message: "select dates to get a price" }),
+  startDate: z.date().min(new Date(2024-10-14),{message:"select a check-in date"}) ,
+  endDate: z.date().min(new Date(2024-10-14),{message:"select a check-out date"}),
 });
 export const facilitySchema = z.object({
   id: z.string().optional(),

@@ -3,7 +3,8 @@
 import { useStoreContext } from '@/components/provider/storeProvider'
 import { useSignOut } from '@/hooks'
 import { cn } from '@/lib'
-import { LogOut } from 'lucide-react'
+import { ChartColumnIncreasing, LogOut } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -12,10 +13,14 @@ type Props = {
     session: Partial<User>
 }
 
+
+
 export default function Navbar({ session }: Props) {
     const path = usePathname()
     const { logout } = useSignOut()
-    const {showNav} = useStoreContext()
+    const { showNav } = useStoreContext()
+    // const { data } = useSession();
+    const user: any = "ADMIN"
 
     // console.log(showNav)
 
@@ -41,7 +46,7 @@ export default function Navbar({ session }: Props) {
                                 <img className="shrink-0 size-[38px] rounded-full" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80" alt="Avatar" />
                             </button>
 
-                            <div className="z-[999] hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-[20rem] bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
+                            <div className="z-[2500] hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-[20rem] bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
                                 <div className="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
                                     <p className="text-[1.2rem] text-gray-500 dark:text-neutral-500">Signed in as</p>
                                     <p className="text-[1.2rem] font-medium text-gray-800 dark:text-neutral-200">{session.email}</p>
@@ -56,6 +61,11 @@ export default function Navbar({ session }: Props) {
                                     {/* <Links url={``} text='Notification' cls={`font-normal `}>
                                         <svg className="shrink-0 size-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
                                     </Links> */}
+                                    {session.user_type === user && (
+                                        <Links url={`/admin`} text='Dashboard' cls={`font-normal  ${path === "/admin" && "bg-gray-100"}`} >
+                                            <ChartColumnIncreasing className="shrink-0 size-6" />
+                                        </Links>
+                                    )}
                                     <span onClick={logout} className='block' >
                                         <Links url={``} text='Log out' cls={`font-normal `}>
                                             <LogOut className='size-6' />
@@ -82,15 +92,27 @@ export default function Navbar({ session }: Props) {
                             </div>
                             <div className="grow">
                                 <div className="flex flex-col md:flex-row md:justify-end md:items-center gap-2 md:gap-1">
-                                    <span aria-label="Close" data-hs-overlay="#hs-header-base" >
+                                    <span className='md:hidden' aria-label="Close" data-hs-overlay="#hs-header-base" >
                                         <Links url={`/rooms`} text='Rooms' cls={`${path.includes("rooms") && "underline  font-semibold"}  hover:bg-transparent hover:underline`} >
                                         </Links>
                                     </span>
-                                    <span aria-label="Close" data-hs-overlay="#hs-header-base">
+                                    <span className='hidden md:block' >
+                                        <Links url={`/rooms`} text='Rooms' cls={`${path.includes("rooms") && "underline  font-semibold"}  hover:bg-transparent hover:underline`} >
+                                        </Links>
+                                    </span>
+                                    <span className='md:hidden' aria-label="Close" data-hs-overlay="#hs-header-base">
                                         <Links url={`/facility`} text='Facility' cls={`${path.includes("facility") && "underline  font-semibold"} hover:bg-transparent hover:underline`} >
                                         </Links>
                                     </span>
-                                    <span aria-label="Close" data-hs-overlay="#hs-header-base">
+                                    <span className='hidden md:block'>
+                                        <Links url={`/facility`} text='Facility' cls={`${path.includes("facility") && "underline  font-semibold"} hover:bg-transparent hover:underline`} >
+                                        </Links>
+                                    </span>
+                                    <span className='md:hidden' aria-label="Close" data-hs-overlay="#hs-header-base">
+                                        <Links url={`/contact`} text='Contact' cls={`${path.includes("contact") && "underline  font-semibold"} hover:bg-transparent hover:underline`} >
+                                        </Links>
+                                    </span>
+                                    <span className='hidden md:block'>
                                         <Links url={`/contact`} text='Contact' cls={`${path.includes("contact") && "underline  font-semibold"} hover:bg-transparent hover:underline`} >
                                         </Links>
                                     </span>

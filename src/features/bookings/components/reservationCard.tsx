@@ -24,15 +24,32 @@ export default function ReservationCard({ price, discount }: Props) {
 
   const width = window.innerWidth 
 // TODO:make it react to width change
+ 
+
   useEffect(() => {
+    // Set initial height
     if(window.innerWidth > 770){
       setHeight(0)
-      return;
+    }else{
+      setHeight(cardRef.current?.clientHeight || 0);
     }
-    setHeight(cardRef.current?.clientHeight || 0);
-  }, [expand, window]);
+    
+    const handleResize = () => {
+      console.log("resize")
+      if(window.innerWidth > 770){
+        setHeight(0)
+      }else{
+        setHeight(cardRef.current?.clientHeight || 0);
+      }
+    };
 
-  console.log(width)
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, [expand]);
+
+  // console.log(width)
 
   const toggleExpand = () => {
     setExpand(!expand)

@@ -18,9 +18,19 @@ export default async function page({ params }: Props) {
     },
     include: {
       images: true,
-      Reviews: true,
+      bookings:true,
+      Reviews:{
+        include:{
+          user:true
+        },
+        orderBy:{
+          createdAt:"desc"
+        }
+      },
     }
   })
+
+  console.log(data)
 
   if (!data) return <Notfound />;
 

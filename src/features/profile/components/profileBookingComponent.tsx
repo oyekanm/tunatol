@@ -1,6 +1,10 @@
 import React from 'react'
 
-export default function ProfileBookingComponent() {
+type Props = {
+  user:User
+}
+
+export default function ProfileBookingComponent({user}:Props) {
   return (
     <div >Your list of booking</div>
   )

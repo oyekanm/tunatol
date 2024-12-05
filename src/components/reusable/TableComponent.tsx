@@ -100,7 +100,7 @@ export default function TableComponent({ column, data, hrefText, path, href, pat
             status: 'warning',
             text: 'Are you sure you want to delete?',
             clickText: "YES",
-            click: () => deleteChecked(ids),
+            click: async() => await deleteChecked(ids),
             duration: 30000,
         });
 

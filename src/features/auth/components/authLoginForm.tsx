@@ -31,7 +31,13 @@ const FormSchema = z.object({
 
 type FormData = z.infer<typeof FormSchema>;
 
-export default function AuthLoginForm() {
+type Props = {
+  url:string
+}
+
+// TODO: implement a reset password
+
+export default function AuthLoginForm({url}:Props) {
   const router = useRouter();
   //  // decodeURIComponent(callbackUrl)
 
@@ -45,6 +51,7 @@ export default function AuthLoginForm() {
 
   const onSubmit = async (data: FormData) => {
     console.log("Submitting form", data);
+    const redirect = url || "/"
 
     const { email, password } = data;
 
@@ -55,8 +62,8 @@ export default function AuthLoginForm() {
         redirect: false,
       });
       console.log({ response });
-      if (!response?.error) {
-        router.push("/");
+      if (response?.ok) {
+        router.push(redirect);
         router.refresh();
       }
 
@@ -111,7 +118,7 @@ export default function AuthLoginForm() {
               <FormControl>
                 <Input
                   className={inputClass}
-                  placeholder="Hasło"
+                  placeholder="Provide Password"
                   {...field}
                   type="password"
                 />
@@ -121,7 +128,7 @@ export default function AuthLoginForm() {
           )}
         />
         <div className="text-right" >
-          <Link href={"/register"} className="text-[1.2rem] underline">click here to register</Link>
+          <Link href={`/register?callbackUrl=${url}`} className="text-[1.2rem] underline">click here to register</Link>
         </div>
         <FormSubmitButton
           // loading={false}

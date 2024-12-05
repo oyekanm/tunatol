@@ -1,10 +1,20 @@
 import { ProfileTabMenu } from '@/features/profile/components'
 import { CurrentUser } from '@/hooks'
+import { prisma } from '@/lib'
 import Link from 'next/link'
 import React from 'react'
 
 export default async function page() {
     const session = await CurrentUser()
+    const user = await prisma.user.findUnique({
+        where:{
+            email:session.email
+        },
+        include:{
+            bookings:true,
+            Reviews:true
+        }
+    })
     if (!session.email) {
         return (
             <div className='flex gap-8 items-center flex-col justify-center w-full px-4  h-[50rem] mx-auto max-w-[50rem]'>
@@ -31,7 +41,7 @@ export default async function page() {
                     </p>
                 </div>
             </div>
-            <ProfileTabMenu/>
+            <ProfileTabMenu user={user}/>
         </div>
     )
 }

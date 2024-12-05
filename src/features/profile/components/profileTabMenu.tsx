@@ -4,7 +4,11 @@ import React, { useState } from 'react'
 import ProfileBookingComponent from './profileBookingComponent'
 import ProfileReviewComponent from './profileReviewComponent'
 
-export default function ProfileTabMenu() {
+type Props = {
+    user:User
+}
+
+export default function ProfileTabMenu({user}:Props) {
     const [tab, setTab] = useState("review")
 
     const changeTab = (name: string) => {
@@ -35,10 +39,10 @@ export default function ProfileTabMenu() {
             </div>
             <div className='Container py-8'>
                 {tab === "review" &&
-                    <ProfileReviewComponent />
+                    <ProfileReviewComponent user={user} />
                 }
                 {tab === "bookings" &&
-                    <ProfileBookingComponent />
+                    <ProfileBookingComponent user={user} />
                 }
             </div>
         </div>

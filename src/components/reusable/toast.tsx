@@ -20,7 +20,7 @@ export default function Toast({ status, text, click, clickText,close, clx }: Pro
     return (
         <div className="space-y-3">
             <div className={
-                cn("max-w-[30rem] bg-gray-800 border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" ,clx)}
+                cn("max-w-[35rem] w-full bg-gray-800 border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" ,clx)}
                 role="alert" aria-labelledby="hs-toast-normal-example-label">
                 <div className="flex p-4 items-center gap-2">
                     <div className="shrink-0">

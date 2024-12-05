@@ -6,6 +6,7 @@ import { useToast } from '@/hooks';
 import { bookingSchema } from '@/lib/schema/roomSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { differenceInDays } from 'date-fns';
+import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { createContext, useState, useContext, Dispatch, SetStateAction, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -47,6 +48,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   const toast = useToast()
   const router = useRouter()
   const path = usePathname()
+  const { data } = useSession();
   const [dateRange, setDateRange] = useState<any>([
     {
       startDate: new Date(),
@@ -94,11 +96,29 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     console.log(form.getValues())
   }
 
-  console.log(form.formState.errors)
+  console.log(Object.entries(form.formState.errors))
 
 
   const createBooking = async () => {
-    // form.handleSubmit()
+    const valid = await form.trigger();
+    if (!valid) {
+      if (!data?.user?.email) {
+        const url = encodeURIComponent(path)
+        router.push(`/login?callbackUrl=${url}`)
+        router.refresh()
+        return;
+      }
+
+      Object.values(form.formState.errors).map(err => {
+        return toast({
+          status: 'error',
+          text: err.message,
+          duration: 50000
+        })
+      })
+      return;
+    }
+
     const results = bookingSchema.safeParse(form.getValues())
     console.log(form.formState.errors)
     if (results.success) {

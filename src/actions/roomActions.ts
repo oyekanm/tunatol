@@ -24,7 +24,7 @@ export async function CreateRoom(
     isAvailable,
   } = room
 
-  console.log(user,user_type)
+  // console.log(user,user_type)
   try {
     // check db for incoming product details
     const unique = await prisma.room.findFirst({
@@ -57,7 +57,7 @@ export async function CreateRoom(
     }
 
     // create products
-    const newRoom = await prisma.room.create({
+    const newRoom:any = await prisma.room.create({
       data: {
         name,
         description,

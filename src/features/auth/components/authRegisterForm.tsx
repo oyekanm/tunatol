@@ -37,7 +37,11 @@ const FormSchema = z.object({
 
 type FormData = z.infer<typeof FormSchema>;
 
-export default function AuthRegisterForm() {
+type Props = {
+  url:string
+}
+
+export default function AuthRegisterForm({url}:Props) {
   const router = useRouter();
   const toast = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -52,6 +56,7 @@ export default function AuthRegisterForm() {
 
   const onSubmit = async (data: FormData) => {
     const result = FormSchema.safeParse(data)
+    const redirect = url || "/"
 
     if (result.success) {
       const { name, email, password, c_password } = result.data;
@@ -80,7 +85,7 @@ export default function AuthRegisterForm() {
         password,
         redirect: false,
       });
-      router.push("/");
+      router.push(redirect);
       router.refresh();
     } else {
       console.log(result.error)
@@ -147,7 +152,8 @@ export default function AuthRegisterForm() {
           )}
         />
         <div className="text-right" >
-          <Link href={"/login"} className="text-[1.2rem] underline">click here to login</Link>
+        {/* router.push(`/login?callbackUrl=${url}`) */}
+          <Link href={`/login?callbackUrl=${url}`} className="text-[1.2rem] underline">click here to login</Link>
         </div>
         <FormSubmitButton
           // loading={false}

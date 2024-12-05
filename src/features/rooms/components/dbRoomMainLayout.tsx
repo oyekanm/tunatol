@@ -1,15 +1,28 @@
 "use client"
 import { TableComponent } from '@/components/reusable'
 import { RoomColumn } from '@/components/tableColumns'
+import { useToast } from '@/hooks'
+import { prisma } from '@/lib'
 import React from 'react'
 
 type Props = {
-    data:Room[]
+    data: Room[]
 }
 
-export default function DbRoomMainLayout({data}:Props) {
-    const deleteIds = (ids:any)=>{
-// console.log(ids)
+export default function DbRoomMainLayout({ data }: Props) {
+    const toast = useToast()
+    const deleteIds = async (ids: any) => {
+        await prisma.room.deleteMany({
+            where: {
+                id: {
+                    in: ids
+                }
+            }
+        })
+        toast({
+            status: 'success',
+            text: 'room deleted'
+        });
     }
     return (
         <div>

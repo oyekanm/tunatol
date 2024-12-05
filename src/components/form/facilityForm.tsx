@@ -19,6 +19,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { facilityInput } from '@/components/form/formInputs';
 import { z } from 'zod';
 import { FacilityColumn } from '../tableColumns';
+import { prisma } from '@/lib';
+import { useToast } from '@/hooks';
 
 const data = [
     {
@@ -91,6 +93,7 @@ type Props ={
 
 
 export default function FacilityForm({data}:Props) {
+    const toast = useToast()
     const [image,setImage] = useState()
     const form = useForm<z.infer<typeof facilitySchema>>({
         resolver: zodResolver(facilitySchema),
@@ -106,15 +109,29 @@ export default function FacilityForm({data}:Props) {
         setImage(imageData)
         // localStorage.setItem("room",JSON.stringify(form.getValues()))
     }
-
+    const deleteIds = async (ids: any) => {
+        await prisma.room.deleteMany({
+            where: {
+                id: {
+                    in: ids
+                }
+            }
+        })
+        toast({
+            status: 'success',
+            text: 'Facility deleted'
+        });
+    }
 
     const labelClass = "font-semibold text-[2rem] text-slate-700 block mb-2 dark:text-white"
     const inputClass = "!py-8 px-4 rounded-[5px] text-gray-700 p-4 py-2 text-[1.8rem] focus-visible:!outline-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500"
     return (
         <div>
             <TableComponent
-                check={false}
                 column={FacilityColumn} data={data} headerText='Facilities'
+                check={true}
+                deleteChecked={deleteIds}
+                
 
             >
                 <Modal trigger='Add a Facility'>

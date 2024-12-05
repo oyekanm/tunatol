@@ -19,7 +19,7 @@ type Props = {
   showTexts?: boolean;
   duration?: number;
   moveBtn?: boolean;
-  session?:Partial<User>
+  session?: Partial<User>
 }
 
 const files = [
@@ -31,10 +31,10 @@ const files = [
 const arrowStyle = "h-[100%] px-10 bg-transparent rounded-none hover:bg-[rgba(0,0,0,.3)] border-none"
 const btnTextStyle = "h-16 w-full mx-auto text-[1.2rem] font-semibold md:font-normal sm:text-[1.5rem] md:text-[1.8rem]"
 
-export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true,session }: Props) {
+export default function ImageCarousel({ showTexts = false, files, duration, moveBtn = true, session }: Props) {
   const [api, setApi] = useState<CarouselApi>()
   const [active, setActive] = useState(0)
-  console.log(api?.selectedScrollSnap(), active)
+  // console.log(api?.selectedScrollSnap(), active)
   // TODO: set the active slide
   // const setActive = () =>{
   //   setApi()
@@ -42,12 +42,15 @@ export default function ImageCarousel({ showTexts = false, files, duration, move
 
   useEffect(()=>{
     setActive(api?.selectedScrollSnap() as number)
-  },[api?.selectedScrollSnap()])
+    // console.log(api?.slideNodes()) 
+    console.log(api?.selectedScrollSnap()) 
+    // api?.on("")
+  },[api, setApi])
 
   return (
     <section className='relative h-full'>
       <Carousel
-      setApi={setApi}
+        setApi={setApi}
         opts={{
           align: "start",
           loop: true,
@@ -80,6 +83,19 @@ export default function ImageCarousel({ showTexts = false, files, duration, move
         )
         }
       </Carousel>
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {files.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => api?.scrollTo(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${active === index
+                ? "bg-white w-4"
+                : "bg-white/50"
+              }`}
+          />
+        ))}
+      </div>
+
       {showTexts && (
         <div className='centre w-[80%] grid gap-8 '>
           <div className='grid gap-2 sm:gap-4 md:gap-8 text-white'>
