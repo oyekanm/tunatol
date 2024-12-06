@@ -5,7 +5,11 @@ export default async function Rooms() {
 
   const rooms: any = await prisma.room.findMany({
     include: {
-      images: true
+      images: true,
+      Reviews:true
+    },
+    orderBy:{
+      createdAt:"asc"
     }
   })
   return (

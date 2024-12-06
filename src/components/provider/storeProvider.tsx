@@ -102,11 +102,13 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
     console.log(form.getValues())
   }
 
-  // console.log(Object.entries(form.formState.errors))
+  console.log(Object.entries(form.formState.errors))
 
 
   const createBooking = async () => {
+    console.log("second call")
     const valid = await form.trigger();
+    console.log(valid)
     if (!valid) {
       if (!data?.user?.email) {
         const url = encodeURIComponent(path)
@@ -160,7 +162,8 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
   }
 
   useEffect(() => {
-    setAnnounce("")
+    // setAnnounce("")
+    setHeight(0)
   }, [])
 
 

@@ -13,14 +13,14 @@ type Props = {
   // user:
 }
 
-export default function PaystackPayment() {
+export default function PaystackPayment({total}:Props) {
   const router = useRouter()
   const { createBooking } = useStoreContext()
   const toast = useToast()
   const config: HookConfig = {
     // reference: (new Date()).getTime().toString(),
     email: "user@example.com",
-    amount: 20000 * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    amount: total * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
     metadata: {
       name: "bolu",
@@ -29,7 +29,7 @@ export default function PaystackPayment() {
         {
           display_name: "Booking Id",
           variable_name: "bookingId",
-          value: "orderId"
+          value: ""
         }
         
       ]
@@ -63,6 +63,7 @@ export default function PaystackPayment() {
   }
   const initializePayment = usePaystackPayment(config);
   const makeReservation = async () => {
+    // console.log("first call ")
     const book = await createBooking()
     // const book = {
     //   bookingId: "3977625string"
@@ -70,7 +71,7 @@ export default function PaystackPayment() {
     if(book?.bookingId){
       let id: any = config?.metadata?.custom_fields && config?.metadata?.custom_fields[0]
       id.value = book?.bookingId
-      console.log(id, book,JSON.stringify(config))
+      // console.log(id, book,JSON.stringify(config))
       initializePayment({ onSuccess, onClose })
     }else{
       return ;

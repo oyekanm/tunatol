@@ -13,7 +13,7 @@ async function getBookings(page: number) {
     prisma.booking.findMany({
       take: ITEMS_PER_PAGE,
       skip,
-      // orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' }
     }),
     prisma.booking.count()
   ]);

@@ -4,7 +4,7 @@ import PrelineScript from "@/lib/PrelineScript";
 import { BreadCrumbs } from "@/components";
 import { CurrentUser } from "@/hooks";
 import { redirect } from "next/navigation";
-import { ToastProvider } from "@/components/provider";
+import { SessionProvider, StoreProvider, ToastProvider } from "@/components/provider";
 
 
 enum UserType {
@@ -17,7 +17,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { email, user_type } = await CurrentUser()
+  const current: any = await CurrentUser()
   const user: any = UserType.ADMIN
 
   // console.log(UserType.ADMIN)
@@ -29,15 +29,19 @@ export default async function DashboardLayout({
   return (
     <html lang="en">
       <body className={`font-sans relative`}>
-        <ToastProvider>
-          <DashboardHeader />
-          <BreadCrumbs />
-          <SideBar />
-          <DashboardMainContent>
-            {children}
-          </DashboardMainContent>
-          <PrelineScript />
-        </ToastProvider>
+        <SessionProvider session={current}>
+          <ToastProvider>
+            <StoreProvider>
+              <DashboardHeader />
+              <BreadCrumbs />
+              <SideBar />
+              <DashboardMainContent>
+                {children}
+              </DashboardMainContent>
+              <PrelineScript />
+            </StoreProvider>
+          </ToastProvider>
+        </SessionProvider>
       </body>
     </html>
   )

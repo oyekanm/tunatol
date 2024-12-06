@@ -34,6 +34,8 @@ export default function DateRangeComponent() {
         }
     }
 
+    // console.log(disabledDates)
+
     return (
         <div className='rangewidth'>
             <div className='hidden md:block'>
@@ -46,6 +48,7 @@ export default function DateRangeComponent() {
                     startDatePlaceholder='Check-in'
                     endDatePlaceholder='Check-out'
                     className='w-full'
+                    minDate={new Date()}
                     // showMonthAndYearPickers
                 />
             </div>

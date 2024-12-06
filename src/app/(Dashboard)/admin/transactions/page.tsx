@@ -13,7 +13,7 @@ async function getTransactions(page: number) {
       },
       take: ITEMS_PER_PAGE,
       skip,
-      // orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' }
     }),
     prisma.transaction.count()
   ]);

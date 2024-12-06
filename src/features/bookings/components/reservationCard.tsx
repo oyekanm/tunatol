@@ -10,10 +10,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 type Props = {
   price: number,
-  discount: number
+  discount: number,
+  disableBtn:boolean
 }
 
-export default function ReservationCard({ price, discount }: Props) {
+export default function ReservationCard({ price, discount,disableBtn }: Props) {
   const { finalPrice } = calculateDiscountedPrice(price, discount)
   const [guests, setGuests] = useState<Guest[]>([
     { count: 1, type: 'Adults' }
@@ -49,7 +50,6 @@ export default function ReservationCard({ price, discount }: Props) {
     return () => window.removeEventListener('resize', handleResize);
   }, [expand]);
 
-  // console.log(width)
 
   const toggleExpand = () => {
     setExpand(!expand)
@@ -69,11 +69,11 @@ export default function ReservationCard({ price, discount }: Props) {
   return (
     <div ref={cardRef} className={`${!expand && "!p-4 !gap-2 md:!gap-6 md:!p-8"} text-start w-full fixed bottom-0 z-[999] left-0 md:rounded-lg right-0 rounded-tr-[20px] rounded-tl-[20px] bg-white md:relative flex flex-col gap-6 shadow-[0_0_10px_rgba(0,0,0,.3)] border border-gray-200 rounded-xl p-8 dark:border-neutral-800`}>
       <div className='flex items-center justify-between'>
-        <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200">
+       {finalPrice ? <p className="font-semibold text-start text-[2rem]  dark:text-neutral-200">
           <NairaSign />{finalPrice}
           <span className='font-normal text-[1.6rem]'> night</span>
           {!expand && <span className='bg-gray-100 md:hidden rounded-[10px] text-gray-800 ml-2 text-[1.3rem] font-normal p-2'>Dec 12-13</span>}
-        </p>
+        </p>:<p className='text-[1.2rem] font-medium'>select a room</p>}
         <span className='cursor-pointer block md:hidden' onClick={toggleExpand}>
           {expand ? <ChevronDown className='!size-8' /> :
             <ChevronUp className='!size-8' />}
@@ -104,7 +104,12 @@ export default function ReservationCard({ price, discount }: Props) {
           }
         </ul>
       </div>
-      <PaystackPayment />
+      {disableBtn &&<PaystackPayment />}
+      {!disableBtn && (
+        <span className='w-full text-[1.4rem] font-semibold text-center'>
+          Room not available
+        </span>
+      )}
       <div></div>
     </div>
   )

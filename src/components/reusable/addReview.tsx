@@ -58,7 +58,7 @@ export default function AddReview({ id }: Props) {
 
     console.log(result)
 
-    if (result.success) {
+    if (result. success) {
       // console.log("first")
       const response = await createReview(result.data, path)
 
@@ -81,6 +81,17 @@ export default function AddReview({ id }: Props) {
     else {
       console.log(result.error)
     }
+  }
+
+  if(form.formState.errors){
+    Object.values(form.formState.errors).map(err => {
+      return toast({
+        status: 'error',
+        text: err.message,
+        duration: 50000
+      })
+    })
+    return;
   }
 
   return (

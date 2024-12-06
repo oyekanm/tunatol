@@ -26,8 +26,8 @@ export default function SingleRoomMainLayout({ room, session }: Props) {
 
     const router = useRouter()
     const { finalPrice } = calculateDiscountedPrice(room.price, room.discount_percent)
-    const { setShowNav, changeFormValue, values,setDisabledDates, setAnnounce,announce } = useStoreContext()
-   
+    const { setShowNav, changeFormValue, values, setDisabledDates, setAnnounce, announce } = useStoreContext()
+
 
 
     const goBack = () => {
@@ -49,34 +49,34 @@ export default function SingleRoomMainLayout({ room, session }: Props) {
         setShowNav(true)
         for (let i = 0; i < events.length; i++) {
             changeFormValue(events[i])
-            
+
         }
     }, [])
 
     useEffect(() => {
+        const announcement = room?.available_announcement
         async function fetchDisabledDates() {
             const roomId = room.id as string
-          const bookedRanges = await getDisabledDates(roomId)
-          
-          // Create array of all disabled dates
-          const allDisabledDates = bookedRanges.flatMap(range => 
-            eachDayOfInterval({ start: range.start, end: range.end })
-          )
-          
-          
-          setDisabledDates(allDisabledDates)
-        }
-    
-        fetchDisabledDates()
-        setAnnounce(room?.available_announcement)
-      }, [room.id])
+            const bookedRanges = await getDisabledDates(roomId)
 
-      console.log(announce)
-      console.log(room)
+            // Create array of all disabled dates
+            const allDisabledDates = bookedRanges.flatMap(range =>
+                eachDayOfInterval({ start: range.start, end: range.end })
+            )
+
+
+            setDisabledDates(allDisabledDates)
+        }
+
+        fetchDisabledDates()
+        // console.log(announcement)
+        setAnnounce(announcement)
+    }, [room.id])
+
 
 
     return (
-        <div>
+        <div className='relative'>
             <div className='Container mx-auto flex  items-center justify-between p-4 absolute md:relative top-4 z-[2000] w-full  '>
                 <Button type="button"
                     onClick={goBack}

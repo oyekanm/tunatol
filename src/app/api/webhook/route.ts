@@ -72,8 +72,8 @@ async function handleSuccessfulPayment(data: any) {
   const bookingId = metadata.custom_fields[0].value;
   const verifiedTx = await verifyTransaction(reference);
 
-  console.log("custom", bookingId, verifiedTx);
-  if (verifiedTx.status === "success") {
+  console.log("custom", bookingId, verifiedTx.data.status);
+  if (verifiedTx.data.status === "success") {
     // Create a transaction in db
     const trax: any = {
       amount: amount / 100,
@@ -83,7 +83,7 @@ async function handleSuccessfulPayment(data: any) {
       bookingId,
       customerEmail: customer.email,
     };
-    await prisma.booking.update({
+    const booking = await prisma.booking.update({
       where: {
         id: bookingId,
       },
@@ -91,7 +91,10 @@ async function handleSuccessfulPayment(data: any) {
         status: "RESERVED",
       },
     });
-    await CreateTransaction(trax);
+    
+    const trx =await CreateTransaction(trax);
+
+    console.log("booking",booking,trx.data)
 
     // Send confirmation email using your email service
     // await sendPaymentConfirmation(customer.email, reference);
